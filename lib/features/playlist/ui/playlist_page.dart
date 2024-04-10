@@ -1,46 +1,45 @@
 // TODO: Create Playlist page with a scrollable list of items
 import 'package:flutter/material.dart';
-import '../../player/ui/player_page.dart';
+import 'package:go_router/go_router.dart';
 
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Для сна',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          title: const Text(
+            'Для сна',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              Navigator.of(context).push<void>(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const PlayerPage(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(1.0, 0.0);
-                    const end = Offset.zero;
-                    const curve = Curves.ease;
-
-                    var tween = Tween(begin: begin, end: end)
-                        .chain(CurveTween(curve: curve));
-
-                    return SlideTransition(
-                      position: animation.drive(tween),
-                      child: child,
-                    );
-                  },
-                ),
-              );
-            },
+        body: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () => context.push('/player'),
+            // Navigator.of(context).push<void>(
+            //   PageRouteBuilder(
+            //     pageBuilder: (context, animation, secondaryAnimation) =>
+            //         const PlayerPage(),
+            //     transitionsBuilder:
+            //         (context, animation, secondaryAnimation, child) {
+            //       const begin = Offset(1.0, 0.0);
+            //       const end = Offset.zero;
+            //       const curve = Curves.ease;
+            //
+            //       var tween = Tween(begin: begin, end: end)
+            //           .chain(CurveTween(curve: curve));
+            //
+            //       return SlideTransition(
+            //         position: animation.drive(tween),
+            //         child: child,
+            //       );
+            //     },
+            //   ),
+            // );
             child: Column(
               children: [
                 ListTile(
@@ -99,6 +98,6 @@ class PlaylistPage extends StatelessWidget {
               ],
             ),
           ),
-      ),
-    );
+        ),
+      );
 }
