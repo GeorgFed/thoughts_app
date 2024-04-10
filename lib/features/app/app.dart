@@ -6,8 +6,7 @@ class ThoughtsApp extends StatelessWidget {
   const ThoughtsApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
@@ -15,5 +14,4 @@ class ThoughtsApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const DashboardPage(),
     );
-  }
 }

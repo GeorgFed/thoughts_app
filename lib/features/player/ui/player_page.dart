@@ -24,57 +24,55 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.purple.shade200,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(
-                    Icons.skip_previous,
-                    color: Colors.white,
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.purple.shade200,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(
+                      Icons.skip_previous,
+                      color: Colors.white,
+                    ),
+                    onPressed: _skipPrevious,
                   ),
-                  onPressed: _skipPrevious,
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                    onPressed: _playPause,
                   ),
-                  onPressed: _playPause,
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.skip_next,
-                    color: Colors.white,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.skip_next,
+                      color: Colors.white,
+                    ),
+                    onPressed: _skipNext,
                   ),
-                  onPressed: _skipNext,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Text(
-              _songTitle,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.white38,
+                ],
               ),
-            ),
-            Text(
-              _songSubtitle,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white38,
+              const SizedBox(height: 20),
+              Text(
+                _songTitle,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white38,
+                ),
               ),
-            ),
-          ],
+              Text(
+                _songSubtitle,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white38,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

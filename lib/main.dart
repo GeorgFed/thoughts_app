@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:thoughts_app/features/app/app.dart';
 
 import 'common/logger.dart';
+import 'features/app/app.dart';
 
 void main() {
   runZonedGuarded(

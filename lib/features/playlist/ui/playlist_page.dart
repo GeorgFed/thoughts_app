@@ -1,13 +1,12 @@
 // TODO: Create Playlist page with a scrollable list of items
 import 'package:flutter/material.dart';
-import 'package:thoughts_app/features/player/ui/player_page.dart';
+import '../../player/ui/player_page.dart';
 
 class PlaylistPage extends StatelessWidget {
-  const PlaylistPage({Key? key}) : super(key: key);
+  const PlaylistPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text(
           'Для сна',
@@ -19,8 +18,7 @@ class PlaylistPage extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: 10,
-        itemBuilder: (context, index) {
-          return GestureDetector(
+        itemBuilder: (context, index) => GestureDetector(
             onTap: () {
               Navigator.of(context).push<void>(
                 PageRouteBuilder(
@@ -100,9 +98,7 @@ class PlaylistPage extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        },
+          ),
       ),
     );
-  }
 }

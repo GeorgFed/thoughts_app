@@ -33,8 +33,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(128), // Adjust the height here
         child: AppBar(
@@ -96,7 +95,6 @@ class _DashboardPageState extends State<DashboardPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'Категории',
@@ -144,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                            vertical: 8, horizontal: 16,),
                         child: Text(
                           'Тег $index',
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -171,7 +169,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
+                          vertical: 8, horizontal: 16,),
                       child: Text(
                         'Бооольшой тег $index',
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -210,14 +208,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(200, 120, 190, 1)),
+                        const Color.fromRGBO(200, 120, 190, 1),),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
                     ),
                     minimumSize: MaterialStateProperty.all(
-                        const Size(double.infinity, 64)),
+                        const Size(double.infinity, 64),),
                   ),
                   onPressed: () {
                     context.go('/');
@@ -233,5 +231,4 @@ class _DashboardPageState extends State<DashboardPage> {
         ],
       ),
     );
-  }
 }
