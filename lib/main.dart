@@ -1,51 +1,37 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:json_theme/json_theme.dart';
 
 import 'common/logger.dart';
 import 'common/router.dart';
+import 'common/theme.dart';
 import 'features/app/app.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async => runZonedGuarded(
+      () async {
+        WidgetsFlutterBinding.ensureInitialized();
 
-  runZonedGuarded(
-    () async {
-      logger.i('Starting app in main.dart');
-      final theme = await _getTheme(isDarkMode: false);
+        logger.i('Starting app in main.dart');
+        final router = AppRouter();
+        const themeProvider = AppThemeProvider();
 
-      if (theme == null) {
-        logger.e('Failed to decode theme');
-        return;
-      } else {
-        logger.i('Theme loaded');
-      }
+        final lightTheme = await themeProvider.getTheme(isDarkMode: false);
+        final darkTheme = await themeProvider.getTheme(isDarkMode: true);
 
-      final router = AppRouter();
+        if (lightTheme == null || darkTheme == null) {
+          logger.e('Failed to decode theme');
+          return;
+        } else {
+          logger.i('Theme loaded');
+        }
 
-      runApp(
-        ThoughtsApp(
-          theme: theme,
-          routerConfig: router.routerConfig,
-        ),
-      );
-    },
-    (error, stackTrace) => logger.e('MAIN: Catch in mainZone $error'),
-  );
-}
-
-Future<ThemeData?> _getTheme({
-  required bool isDarkMode,
-}) async {
-  final lightThemeRaw =
-      await rootBundle.loadString('assets/theme/theme_light.json');
-  final darkThemeRaw =
-      await rootBundle.loadString('assets/theme/theme_dark.json');
-  final themeJson =
-      isDarkMode ? jsonDecode(darkThemeRaw) : jsonDecode(lightThemeRaw);
-  final theme = ThemeDecoder.decodeThemeData(themeJson);
-  return theme;
-}
+        runApp(
+          ThoughtsApp(
+            lightTheme: lightTheme,
+            darkTheme: darkTheme,
+            routerConfig: router.routerConfig,
+          ),
+        );
+      },
+      (error, stackTrace) => logger.e('MAIN: Catch in mainZone $error'),
+    );

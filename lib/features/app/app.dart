@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ThoughtsApp extends StatelessWidget {
-  final ThemeData theme;
+  final ThemeData darkTheme;
+  final ThemeData lightTheme;
   final RouterConfig<Object> routerConfig;
 
   const ThoughtsApp({
-    required this.theme,
+    required this.lightTheme,
+    required this.darkTheme,
     required this.routerConfig,
     super.key,
   });
@@ -13,7 +15,8 @@ class ThoughtsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp.router(
         title: 'Flutter Demo',
-        theme: theme,
+        darkTheme: darkTheme,
+        theme: lightTheme,
         debugShowCheckedModeBanner: false,
         routerConfig: routerConfig,
       );

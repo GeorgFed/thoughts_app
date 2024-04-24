@@ -25,7 +25,7 @@
       "outline": "#ff9a8d95",
       "outlineVariant": "#ff4e444b",
       "primary": "#ffffabf1",
-      "primaryContainer": "#ffa85c9f",
+      "primaryContainer": "#ffffabf1",
       "scrim": "#ff000000",
       "secondary": "#ffdabfd2",
       "secondaryContainer": "#ff554150",
@@ -80,7 +80,7 @@
     "textTheme": "normal"
   },
   "canvasColor": "#ff1f1a1d",
-  "cardColor": "#ff1f1a1d",
+  "cardColor": "#ff313133",
   "colorScheme": {
     "background": "#ff1f1a1d",
     "brightness": "dark",
@@ -135,7 +135,7 @@
   },
   "materialTapTargetSize": "shrinkWrap",
   "platform": "macOS",
-  "primaryColor": "#ff1f1a1d",
+  "primaryColor": "#ffffabf1",
   "primaryColorDark": "#ff000000",
   "primaryColorLight": "#ff9e9e9e",
   "primaryIconTheme": {
