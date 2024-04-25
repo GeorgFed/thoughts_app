@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../common/widgets/ta_button.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -63,7 +66,53 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GestureDetector(
+                onTap: () => context.go('/sign_up'),
+                child: Container(
+                  height: 128,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: theme.cardColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Вход в систему',
+                                style: theme.textTheme.titleLarge,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Text(
+                                'Войдите или зарегестрируйтесь, чтобы у вас появился доступ ко всем возможностям приложения',
+                                softWrap: true,
+                                maxLines: 3,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CupertinoListTileChevron(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -95,7 +144,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Text(
                     'Поиск',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.scrim,
+                      color: theme.colorScheme.onBackground,
                     ),
                   ),
                 ),
@@ -214,29 +263,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 44.0),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        theme.primaryColor,
-                      ),
-                      shadowColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      minimumSize: MaterialStateProperty.all(
-                        const Size(double.infinity, 72),
-                      ),
-                    ),
-                    onPressed: () => context.go('/player'),
-                    child: Text(
-                      'Подобрать медитацию',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                    ),
+                  child: TAButton(
+                    text: 'Подобрать медитацию',
+                    onPressed: () => context.go('/playlist'),
                   ),
                 ),
               ],

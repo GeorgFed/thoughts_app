@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/sign_in/ui/sign_in_page.dart';
+import '../features/auth/sign_up/ui/enter_name_page.dart';
+import '../features/auth/sign_up/ui/sign_up_page.dart';
 import '../features/dashboard/ui/dashboard_page.dart';
 import '../features/player/ui/player_page.dart';
 import '../features/playlist/ui/playlist_page.dart';
@@ -12,27 +15,27 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-        ) =>
-            const DashboardPage(),
+        builder: (_, __) => const DashboardPage(),
         routes: [
           GoRoute(
             path: 'playlist',
-            builder: (
-              BuildContext context,
-              GoRouterState state,
-            ) =>
-                const PlaylistPage(),
+            builder: (_, __) => const PlaylistPage(),
           ),
           GoRoute(
             path: 'player',
-            builder: (
-              BuildContext context,
-              GoRouterState state,
-            ) =>
-                const PlayerPage(),
+            builder: (_, __) => const PlayerPage(),
+          ),
+          GoRoute(
+            path: 'sign_in',
+            builder: (_, __) => const SignInPage(),
+          ),
+          GoRoute(
+            path: 'sign_up',
+            builder: (_, __) => const SignUpPage(),
+          ),
+          GoRoute(
+            path: 'enter_name',
+            builder: (_, __) => const EnterNamePage(),
           ),
         ],
       ),
