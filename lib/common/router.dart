@@ -7,6 +7,8 @@ import '../features/auth/sign_up/ui/sign_up_page.dart';
 import '../features/dashboard/ui/dashboard_page.dart';
 import '../features/player/ui/player_page.dart';
 import '../features/playlist/ui/playlist_page.dart';
+import '../features/profile/ui/profile_page.dart';
+import '../features/suggest/ui/suggest_page.dart';
 
 class AppRouter {
   AppRouter();
@@ -36,6 +38,14 @@ class AppRouter {
           GoRoute(
             path: 'enter_name',
             builder: (_, __) => const EnterNamePage(),
+          ),
+          GoRoute(
+            path: 'profile',
+            builder: (_, __) => const ProfilePage(),
+          ),
+          GoRoute(
+            path: 'suggest',
+            builder: (_, __) => const SuggestPage(),
           ),
         ],
       ),

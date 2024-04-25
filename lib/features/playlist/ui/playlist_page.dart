@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../common/widgets/ta_tag.dart';
+
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});
 
@@ -47,23 +49,16 @@ class PlaylistPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: List.generate(
-                    3,
-                    (index) => Container(
-                      margin: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: theme.cardColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 2,
-                          horizontal: 16,
-                        ),
-                        child: Text(
-                          'Тег $index',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      3,
+                      (index) => Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: TATag(
+                          text: 'Маленький тег $index',
+                          size: TATagSize.small,
                         ),
                       ),
                     ),

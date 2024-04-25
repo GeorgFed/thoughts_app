@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../common/widgets/ta_banner.dart';
 import '../../../common/widgets/ta_button.dart';
+import '../../../common/widgets/ta_tag.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -22,7 +23,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       setState(() {
-        _isPulsating = !_isPulsating; // Toggle the pulsating animation
+        _isPulsating = !_isPulsating;
       });
     });
   }
@@ -41,25 +42,21 @@ class _DashboardPageState extends State<DashboardPage> {
         preferredSize: const Size.fromHeight(128),
         child: AppBar(
           toolbarHeight: 128,
-          title: Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 44),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Привет, Егор',
-                      style: theme.textTheme.headlineLarge,
-                    ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 44),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Привет, Егор',
+                    style: theme.textTheme.headlineLarge,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.person_outline_rounded),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.person_outline_rounded),
+                  onPressed: () => context.push('/profile'),
+                ),
+              ],
             ),
           ),
         ),
@@ -70,47 +67,11 @@ class _DashboardPageState extends State<DashboardPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: GestureDetector(
-                onTap: () => context.go('/sign_up'),
-                child: Container(
-                  height: 128,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: theme.cardColor,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Вход в систему',
-                                style: theme.textTheme.titleLarge,
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Text(
-                                'Войдите или зарегестрируйтесь, чтобы у вас появился доступ ко всем возможностям приложения',
-                                softWrap: true,
-                                maxLines: 3,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CupertinoListTileChevron(),
-                      ),
-                    ],
-                  ),
-                ),
+              child: TABanner(
+                title: 'Вход в систему',
+                text:
+                    'Войдите или зарегестрируйтесь, чтобы у вас появился доступ ко всем возможностям приложения',
+                onTap: () => context.push('/sign_up'),
               ),
             ),
             SingleChildScrollView(
@@ -181,25 +142,10 @@ class _DashboardPageState extends State<DashboardPage> {
                             vertical: 4,
                             horizontal: 8,
                           ),
-                          child: GestureDetector(
+                          child: TATag(
+                            text: 'Тег $index',
                             onTap: () => context.go('/playlist'),
-                            child: Container(
-                              margin: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: theme.cardColor,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 16,
-                                ),
-                                child: Text(
-                                  'Тег $index',
-                                  style: Theme.of(context).textTheme.bodyLarge,
-                                ),
-                              ),
-                            ),
+                            size: TATagSize.large,
                           ),
                         ),
                       ),
@@ -214,22 +160,10 @@ class _DashboardPageState extends State<DashboardPage> {
                             vertical: 4,
                             horizontal: 8,
                           ),
-                          child: Container(
-                            margin: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: theme.cardColor,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 16,
-                              ),
-                              child: Text(
-                                'Бооольшой тег $index',
-                                style: theme.textTheme.bodyLarge,
-                              ),
-                            ),
+                          child: TATag(
+                            text: 'Бооольшой Тег $index',
+                            onTap: () => context.go('/playlist'),
+                            size: TATagSize.large,
                           ),
                         ),
                       ),
@@ -265,7 +199,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 44.0),
                   child: TAButton(
                     text: 'Подобрать медитацию',
-                    onPressed: () => context.go('/playlist'),
+                    onPressed: () => context.go('/suggest'),
                   ),
                 ),
               ],
