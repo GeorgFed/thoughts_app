@@ -56,6 +56,6 @@ class TATag extends StatelessWidget {
   double get sizeIndex => size == TATagSize.small
       ? 0.5
       : size == TATagSize.medium
-          ? 1
-          : 1.5;
+          ? 1.5
+          : 2;
 }

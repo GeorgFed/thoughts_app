@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../common/widgets/ta_banner.dart';
 import '../../../common/widgets/ta_button.dart';
 import '../../../common/widgets/ta_tag.dart';
 
@@ -65,15 +64,15 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TABanner(
-                title: 'Вход в систему',
-                text:
-                    'Войдите или зарегестрируйтесь, чтобы у вас появился доступ ко всем возможностям приложения',
-                onTap: () => context.push('/sign_up'),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(16.0),
+            //   child: TABanner(
+            //     title: 'Вход в систему',
+            //     text:
+            //         'Войдите или зарегестрируйтесь, чтобы у вас появился доступ ко всем возможностям приложения',
+            //     onTap: () => context.push('/sign_up'),
+            //   ),
+            // ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -92,7 +91,10 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 24,
+              ),
               child: GestureDetector(
                 onTap: () => context.go('/playlist'),
                 child: Container(
@@ -112,17 +114,12 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
                   Text(
                     'Категории',
                     style: theme.textTheme.titleLarge,
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.chevron_right_rounded),
                   ),
                 ],
               ),
@@ -173,7 +170,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             const SizedBox(
-              height: 128,
+              height: 80,
             ),
             Stack(
               children: [

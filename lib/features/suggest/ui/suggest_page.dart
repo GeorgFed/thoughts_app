@@ -83,7 +83,6 @@ class SuggestPage extends StatelessWidget {
                         .map(
                           (it) => TATag(
                             text: it,
-                            size: TATagSize.large,
                             isSelected: false,
                           ),
                         )
@@ -94,7 +93,10 @@ class SuggestPage extends StatelessWidget {
             ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 44,
+              ),
               child: TAButton(
                 text: 'Подобрать медитацию',
                 onPressed: () => context.push('/playlist'),
