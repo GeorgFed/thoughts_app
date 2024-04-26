@@ -5,7 +5,10 @@ analyzer:
     - lib/**/models/*.freezed.dart
     - lib/**/models/*.g.dart
     - lib/**/models/**/*.freezed.dart
-    - lib/**/models/**/*.g.dart
+    - lib/**/model/**/*.g.dart  - lib/**/models/*.freezed.dart
+    - lib/**/model/*.g.dart
+    - lib/**/model/**/*.freezed.dart
+    - lib/**/model/**/*.g.dart
 
 linter:
   rules:

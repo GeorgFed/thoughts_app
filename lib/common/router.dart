@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/sign_in/ui/sign_in_page.dart';
 import '../features/auth/sign_up/ui/enter_name_page.dart';
 import '../features/auth/sign_up/ui/sign_up_page.dart';
-import '../features/dashboard/ui/dashboard_page.dart';
+import '../features/dashboard/dashboard_page.dart';
 import '../features/player/ui/player_page.dart';
-import '../features/playlist/ui/playlist_page.dart';
+import '../features/playlist/playlist_page.dart';
 import '../features/profile/ui/profile_page.dart';
 import '../features/suggest/ui/suggest_page.dart';
 
@@ -20,8 +20,11 @@ class AppRouter {
         builder: (_, __) => const DashboardPage(),
         routes: [
           GoRoute(
-            path: 'playlist',
-            builder: (_, __) => const PlaylistPage(),
+            path: 'playlist/:categoryName',
+            builder: (_, state) {
+              final categoryName = state.pathParameters['categoryName'] ?? '';
+              return PlaylistPage(categoryName);
+            },
           ),
           GoRoute(
             path: 'player',

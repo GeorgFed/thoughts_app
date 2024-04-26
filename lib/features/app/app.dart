@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ThoughtsApp extends StatelessWidget {
   final ThemeData darkTheme;
@@ -13,11 +14,13 @@ class ThoughtsApp extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        title: 'Flutter Demo',
-        darkTheme: darkTheme,
-        theme: lightTheme,
-        debugShowCheckedModeBanner: false,
-        routerConfig: routerConfig,
+  Widget build(BuildContext context) => ProviderScope(
+        child: MaterialApp.router(
+          title: 'Flutter Demo',
+          darkTheme: darkTheme,
+          theme: lightTheme,
+          debugShowCheckedModeBanner: false,
+          routerConfig: routerConfig,
+        ),
       );
 }
