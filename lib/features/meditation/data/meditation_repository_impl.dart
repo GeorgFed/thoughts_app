@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../../../common/logger.dart';
-import '../meditation_repository.dart';
-import '../model/meditation_model.dart';
+import '../domain/meditation_repository.dart';
+import '../domain/model/meditation_model.dart';
 
 class MeditationRepositoryImpl implements MeditationRepository {
   List<MeditationModel>? _meditations;

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import '../meditation/meditation_repository.dart';
+import '../meditation/domain/meditation_repository.dart';
 
 part 'dashboard_state.dart';
 

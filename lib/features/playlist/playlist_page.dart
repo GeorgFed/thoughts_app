@@ -31,47 +31,45 @@ class _PlaylistView extends StatelessWidget {
   const _PlaylistView();
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return BlocBuilder<PlaylistViewModel, PlaylistState>(
-      builder: (context, state) => switch (state) {
-        PlaylistStateIdle() => const SizedBox.shrink(),
-        PlaylistStateLoading() => const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        PlaylistStateData(
-          :final categoryName,
-          :final playlistItems,
-        ) =>
-          Scaffold(
-            appBar: AppBar(
-              title: Text(
-                categoryName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+  Widget build(BuildContext context) =>
+      BlocBuilder<PlaylistViewModel, PlaylistState>(
+        builder: (context, state) => switch (state) {
+          PlaylistStateIdle() => const SizedBox.shrink(),
+          PlaylistStateLoading() => const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
-              centerTitle: true,
             ),
-            body: ListView(
-              children: playlistItems
-                  .map(
-                    (e) => MeditationListTile(
-                      title: e.title,
-                      subtitle: e.author,
-                      onTap: () => context.go('/meditation/${e.id}'),
-                      tags: e.tags,
-                      coverUrl: e.coverUrl,
-                    ),
-                  )
-                  .toList(),
+          PlaylistStateData(
+            :final categoryName,
+            :final playlistItems,
+          ) =>
+            Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  categoryName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+              body: ListView(
+                children: playlistItems
+                    .map(
+                      (e) => MeditationListTile(
+                        title: e.title,
+                        subtitle: e.author,
+                        onTap: () => context.go('/player/${e.id}'),
+                        tags: e.tags,
+                        coverUrl: e.coverUrl,
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
-          ),
-      },
-    );
-  }
+        },
+      );
 }
 
 class MeditationListTile extends StatelessWidget {
