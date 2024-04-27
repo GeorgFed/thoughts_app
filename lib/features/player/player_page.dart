@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../common/logger.dart';
+import '../../common/widgets/ta_pulsating_button.dart';
 import 'player_di.dart';
 import 'player_view_model.dart';
 
@@ -34,7 +35,15 @@ class _PlayerView extends StatefulWidget {
 }
 
 class _PlayerViewState extends State<_PlayerView> {
-  final _player = AudioPlayer();
+  final player = AudioPlayer();
+
+  final playlist = ConcatenatingAudioSource(
+    children: [
+      AudioSource.asset('assets/mp3/melody-of-nature-main.mp3'),
+      AudioSource.asset('assets/mp3/moonlight.mp3'),
+      AudioSource.asset('assets/mp3/sad-music.mp3'),
+    ],
+  );
 
   @override
   void initState() {
@@ -48,8 +57,8 @@ class _PlayerViewState extends State<_PlayerView> {
     await session.configure(const AudioSessionConfiguration.speech());
 
     try {
-      await _player.setAudioSource(
-        AudioSource.asset('assets/mp3/melody-of-nature-main.mp3'),
+      await player.setAudioSource(
+        playlist,
       );
     } on PlayerException catch (e) {
       logger.e('Error loading audio source: $e');
@@ -59,23 +68,15 @@ class _PlayerViewState extends State<_PlayerView> {
   @override
   void dispose() {
     super.dispose();
-    _player.dispose();
+    player.dispose();
   }
 
-  void _playPause() {
-    if (_player.playing) {
-      _player.pause();
-    } else {
-      _player.play();
-    }
+  Future<void> _skipPrevious() async {
+    await player.seekToPrevious();
   }
 
-  void _skipPrevious() {
-    // TODO: Implement logic to skip to previous song
-  }
-
-  void _skipNext() {
-    // TODO: Implement logic to skip to next song
+  Future<void> _skipNext() async {
+    await player.seekToNext();
   }
 
   @override
@@ -108,28 +109,46 @@ class _PlayerViewState extends State<_PlayerView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 const Spacer(flex: 3),
-                Container(
-                  width: 144,
-                  height: 144,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.cardColor,
-                    image: DecorationImage(
-                      // Apply color filter to darken image
-                      colorFilter: const ColorFilter.mode(
-                        Colors.black26,
-                        BlendMode.darken,
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Center(
+                      child: TAPulsatingBlob(
+                        minHeight: 56,
+                        maxHeight: 80,
+                        minWidth: 44,
+                        maxWidth: 96,
+                        minBlurRadius: 32,
+                        maxBlurRadius: 90,
+                        animationDuration: Duration(seconds: 3),
                       ),
-                      image: AssetImage(coverUrl),
-                      fit: BoxFit.cover,
                     ),
-                  ),
+                    Center(
+                      child: Container(
+                        width: 144,
+                        height: 144,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: theme.cardColor,
+                          image: DecorationImage(
+                            // Apply color filter to darken image
+                            colorFilter: const ColorFilter.mode(
+                              Colors.black26,
+                              BlendMode.darken,
+                            ),
+                            image: AssetImage(coverUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 64,
                 ),
                 StreamBuilder<PlayerState>(
-                  stream: _player.playerStateStream,
+                  stream: player.playerStateStream,
                   builder: (context, snapshot) {
                     final playerState = snapshot.data;
                     final processingState = playerState?.processingState;
@@ -137,7 +156,7 @@ class _PlayerViewState extends State<_PlayerView> {
 
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
+                      children: [
                         IconButton(
                           icon: const Icon(
                             Icons.skip_previous,
@@ -159,20 +178,20 @@ class _PlayerViewState extends State<_PlayerView> {
                             IconButton(
                               icon: const Icon(Icons.play_arrow),
                               iconSize: 64.0,
-                              onPressed: _player.play,
+                              onPressed: player.play,
                             ),
                           if (playing == true &&
                               processingState != ProcessingState.completed)
                             IconButton(
                               icon: const Icon(Icons.pause),
                               iconSize: 64.0,
-                              onPressed: _player.pause,
+                              onPressed: player.pause,
                             ),
                           if (processingState == ProcessingState.completed)
                             IconButton(
                               icon: const Icon(Icons.replay),
                               iconSize: 64.0,
-                              onPressed: () => _player.seek(Duration.zero),
+                              onPressed: () => player.seek(Duration.zero),
                             ),
                         ],
                         IconButton(
@@ -188,9 +207,13 @@ class _PlayerViewState extends State<_PlayerView> {
                   },
                 ),
                 const SizedBox(height: 20),
-                Text(trackTitle, style: theme.textTheme.headlineSmall
-                    //  ?.copyWith(color: Colors.white),
-                    ),
+                Text(
+                  trackTitle,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.headlineSmall
+                  //  ?.copyWith(color: Colors.white),
+                  ,
+                ),
                 const SizedBox(height: 4),
                 Text(author, style: theme.textTheme.bodyMedium
                     // ?.copyWith(color: Colors.white70),

@@ -2,30 +2,38 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'ta_button.dart';
+class TAPulsatingBlob extends StatefulWidget {
+  final double minWidth;
+  final double maxWidth;
+  final double minHeight;
+  final double maxHeight;
+  final double minBlurRadius;
+  final double maxBlurRadius;
+  final Duration animationDuration;
 
-class TAPulsatingButton extends StatefulWidget {
-  final String text;
-  final void Function() onPressed;
-
-  const TAPulsatingButton({
+  const TAPulsatingBlob({
     super.key,
-    required this.text,
-    required this.onPressed,
+    required this.minWidth,
+    required this.maxWidth,
+    required this.minHeight,
+    required this.maxHeight,
+    required this.minBlurRadius,
+    required this.maxBlurRadius,
+    required this.animationDuration,
   });
 
   @override
-  State<TAPulsatingButton> createState() => _TAPulsatingButtonState();
+  State<TAPulsatingBlob> createState() => _TAPulsatingBlobState();
 }
 
-class _TAPulsatingButtonState extends State<TAPulsatingButton> {
+class _TAPulsatingBlobState extends State<TAPulsatingBlob> {
   bool _isPulsating = false;
   late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(widget.animationDuration, (timer) {
       setState(() {
         _isPulsating = !_isPulsating;
       });
@@ -41,34 +49,25 @@ class _TAPulsatingButtonState extends State<TAPulsatingButton> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Stack(
-      children: [
-        Center(
-          child: AnimatedContainer(
-            height: 24,
-            width: _isPulsating ? 44 : 64,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary,
-                  spreadRadius: _isPulsating ? 24 : 44,
-                  blurRadius: _isPulsating ? 24 : 44,
-                  offset: const Offset(0, 16),
-                ),
-              ],
+    return Center(
+      child: AnimatedContainer(
+        height: _isPulsating ? widget.minHeight : widget.maxHeight,
+        width: _isPulsating ? widget.minWidth : widget.maxWidth,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.primary,
+              spreadRadius:
+                  _isPulsating ? widget.minBlurRadius : widget.maxBlurRadius,
+              blurRadius:
+                  _isPulsating ? widget.minBlurRadius : widget.maxBlurRadius,
+              offset: const Offset(0, 16),
             ),
-            duration: const Duration(seconds: 3),
-            curve: Curves.easeInOut,
-          ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 44.0),
-          child: TAButton(
-            text: widget.text,
-            onPressed: widget.onPressed,
-          ),
-        ),
-      ],
+        duration: widget.animationDuration,
+        curve: Curves.easeInOut,
+      ),
     );
   }
 }

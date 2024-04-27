@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common/widgets/ta_button.dart';
 import '../../common/widgets/ta_pulsating_button.dart';
 import '../../common/widgets/ta_tag.dart';
 import 'dashboard_di.dart';
@@ -201,9 +202,25 @@ class _DashboardView extends StatelessWidget {
                   const SizedBox(
                     height: 80,
                   ),
-                  TAPulsatingButton(
-                    text: 'Подобрать медитацию',
-                    onPressed: () => context.push('/suggest'),
+                  Stack(
+                    children: [
+                      const TAPulsatingBlob(
+                        minHeight: 24,
+                        maxHeight: 24,
+                        minWidth: 44,
+                        maxWidth: 64,
+                        minBlurRadius: 24,
+                        maxBlurRadius: 48,
+                        animationDuration: Duration(seconds: 3),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 44.0),
+                        child: TAButton(
+                          text: 'Подобрать медитацию',
+                          onPressed: () => context.push('/suggest'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
