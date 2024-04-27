@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../common/logger.dart';
 import '../../common/widgets/ta_pulsating_button.dart';
 import 'player_di.dart';
 import 'player_view_model.dart';
+import 'seek_bar.dart';
 
 class PlayerPage extends StatelessWidget {
   final String trackId;
@@ -79,6 +81,18 @@ class _PlayerViewState extends State<_PlayerView> {
     await player.seekToNext();
   }
 
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+        player.positionStream,
+        player.bufferedPositionStream,
+        player.durationStream,
+        (position, bufferedPosition, duration) => PositionData(
+          position,
+          bufferedPosition,
+          duration ?? Duration.zero,
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -108,7 +122,7 @@ class _PlayerViewState extends State<_PlayerView> {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Spacer(flex: 3),
+                const Spacer(flex: 2),
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -215,40 +229,30 @@ class _PlayerViewState extends State<_PlayerView> {
                   ,
                 ),
                 const SizedBox(height: 4),
-                Text(author, style: theme.textTheme.bodyMedium
-                    // ?.copyWith(color: Colors.white70),
-                    ),
-                const SizedBox(height: 44),
+                Text(
+                  author,
+                  style: theme.textTheme.bodyMedium
+                  // ?.copyWith(color: Colors.white70),
+                  ,
+                ),
+                const SizedBox(height: 16),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 44.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '00:00',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                                //   color: Colors.white70,
-                                ),
-                          ),
-                          Text(
-                            '03:00',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                                //    color: Colors.white70,
-                                ),
-                          ),
-                        ],
-                      ),
                       const SizedBox(height: 8),
-                      LinearProgressIndicator(
-                        value: 0.5,
-                        color: theme.colorScheme.primary,
-                        backgroundColor: theme.colorScheme.outline,
-                        // color: theme.colorScheme.background,
-                        // backgroundColor: theme.colorScheme.outline,
-                        borderRadius: BorderRadius.circular(8),
-                        minHeight: 8,
+                      StreamBuilder<PositionData>(
+                        stream: _positionDataStream,
+                        builder: (context, snapshot) {
+                          final positionData = snapshot.data;
+                          return SeekBar(
+                            duration: positionData?.duration ?? Duration.zero,
+                            position: positionData?.position ?? Duration.zero,
+                            bufferedPosition:
+                                positionData?.bufferedPosition ?? Duration.zero,
+                            onChangeEnd: player.seek,
+                          );
+                        },
                       ),
                     ],
                   ),
