@@ -24,13 +24,15 @@ class PlayerPage extends StatelessWidget {
   Widget build(BuildContext context) => Consumer(
         builder: (context, ref, _) => BlocProvider.value(
           value: ref.watch(PlayerDi.viewModel)..onInit(trackId),
-          child: const _PlayerView(),
+          child: _PlayerView(ref.watch(PlayerDi.viewModel)),
         ),
       );
 }
 
 class _PlayerView extends StatefulWidget {
-  const _PlayerView();
+  final PlayerViewModel viewModel;
+
+  const _PlayerView(this.viewModel);
 
   @override
   State<_PlayerView> createState() => _PlayerViewState();
@@ -49,7 +51,6 @@ class _PlayerViewState extends State<_PlayerView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
   }
@@ -75,10 +76,12 @@ class _PlayerViewState extends State<_PlayerView> {
 
   Future<void> _skipPrevious() async {
     await player.seekToPrevious();
+    widget.viewModel.onPrevious();
   }
 
   Future<void> _skipNext() async {
     await player.seekToNext();
+    widget.viewModel.onNext();
   }
 
   Stream<PositionData> get _positionDataStream =>
@@ -114,10 +117,7 @@ class _PlayerViewState extends State<_PlayerView> {
           PlayerStateIdle() => const SizedBox.shrink(),
           PlayerStateNotFound() => const SizedBox.shrink(),
           PlayerStateData(
-            :final trackTitle,
-            :final trackUrl,
-            :final author,
-            :final coverUrl,
+            :final currentTrack,
           ) =>
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -150,7 +150,7 @@ class _PlayerViewState extends State<_PlayerView> {
                               Colors.black26,
                               BlendMode.darken,
                             ),
-                            image: AssetImage(coverUrl),
+                            image: AssetImage(currentTrack.coverUrl),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -180,19 +180,17 @@ class _PlayerViewState extends State<_PlayerView> {
                           onPressed: _skipPrevious,
                         ),
                         ...[
-                          if (processingState == ProcessingState.loading ||
-                              processingState == ProcessingState.buffering)
-                            Container(
-                              margin: const EdgeInsets.all(8.0),
-                              width: 64.0,
-                              height: 64.0,
-                              child: const CircularProgressIndicator(),
-                            ),
                           if (playing != true)
                             IconButton(
                               icon: const Icon(Icons.play_arrow),
                               iconSize: 64.0,
-                              onPressed: player.play,
+                              disabledColor: theme.colorScheme.outline,
+                              onPressed:
+                                  (processingState == ProcessingState.loading ||
+                                          processingState ==
+                                              ProcessingState.buffering)
+                                      ? null
+                                      : player.play,
                             ),
                           if (playing == true &&
                               processingState != ProcessingState.completed)
@@ -214,7 +212,8 @@ class _PlayerViewState extends State<_PlayerView> {
                             //  color: Colors.white,
                             size: 44,
                           ),
-                          onPressed: _skipNext,
+                          disabledColor: theme.colorScheme.outline,
+                          onPressed: state.isLastTrack ? null : _skipNext,
                         ),
                       ],
                     );
@@ -222,7 +221,7 @@ class _PlayerViewState extends State<_PlayerView> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  trackTitle,
+                  currentTrack.trackTitle,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineSmall
                   //  ?.copyWith(color: Colors.white),
@@ -230,7 +229,7 @@ class _PlayerViewState extends State<_PlayerView> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  author,
+                  currentTrack.author,
                   style: theme.textTheme.bodyMedium
                   // ?.copyWith(color: Colors.white70),
                   ,

@@ -22,13 +22,61 @@ class PlayerViewModel extends Cubit<PlayerPageState> {
       return;
     }
 
+    final playlist = meditationRepository.meditations
+        ?.where((element) => element.category == meditation.category)
+        .toList();
+
+    final meditationIndex = playlist?.indexWhere(
+      (element) => element.id == meditation.id,
+    );
+
     emit(
       PlayerStateData(
-        trackTitle: meditation.title,
-        trackUrl: meditation.mediaFile,
-        author: meditation.author,
-        coverUrl: meditation.cover,
+        trackIndex: meditationIndex ?? 0,
+        trackItems: playlist
+                ?.map(
+                  (it) => TrackItem(
+                    trackTitle: it.title,
+                    author: it.author,
+                    coverUrl: it.cover,
+                    trackUrl: it.mediaFile,
+                  ),
+                )
+                .toList() ??
+            [],
       ),
     );
+  }
+
+  void onNext() {
+    if (state is PlayerStateData) {
+      final stateData = state as PlayerStateData;
+
+      if (stateData.isLastTrack) {
+        return;
+      }
+
+      emit(
+        stateData.copyWith(
+          trackIndex: stateData.trackIndex + 1,
+        ),
+      );
+    }
+  }
+
+  void onPrevious() {
+    if (state is PlayerStateData) {
+      final stateData = state as PlayerStateData;
+
+      if (stateData.isFirstTrack) {
+        return;
+      }
+
+      emit(
+        stateData.copyWith(
+          trackIndex: stateData.trackIndex - 1,
+        ),
+      );
+    }
   }
 }
