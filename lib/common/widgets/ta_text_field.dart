@@ -11,6 +11,7 @@ class TATextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final TATextFieldSize size;
+  final void Function(String)? onChanged;
 
   const TATextField({
     required this.controller,
@@ -18,6 +19,7 @@ class TATextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.size = TATextFieldSize.medium,
+    this.onChanged,
     super.key,
   });
 
@@ -41,6 +43,7 @@ class TATextField extends StatelessWidget {
               obscureText: obscureText,
               keyboardType: keyboardType,
               maxLines: size == TATextFieldSize.large ? null : 1,
+              onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: hint,
                 hintMaxLines: size == TATextFieldSize.large ? 3 : 1,

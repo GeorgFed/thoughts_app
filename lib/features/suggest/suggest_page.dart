@@ -26,6 +26,20 @@ class _SuggestPageState extends State<SuggestPage> {
 
   final textController = TextEditingController();
 
+  var buttonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    textController.addListener(_updateButtonState);
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -96,12 +110,19 @@ class _SuggestPageState extends State<SuggestPage> {
                           (it) => TATag(
                             text: it.value.title,
                             isSelected: it.value.isSelected,
-                            onTap: () => setState(
-                              () =>
+                            onTap: () {
+                              setState(
+                                () {
                                   _selectableItems[it.key] = it.value.copyWith(
-                                isSelected: !it.value.isSelected,
-                              ),
-                            ),
+                                    isSelected: !it.value.isSelected,
+                                  );
+                                  buttonEnabled =
+                                      textController.text.isNotEmpty &&
+                                          _selectableItems
+                                              .any((it) => it.isSelected);
+                                },
+                              );
+                            },
                           ),
                         )
                         .toList(),
@@ -117,7 +138,8 @@ class _SuggestPageState extends State<SuggestPage> {
               ),
               child: TAButton(
                 text: 'Подобрать медитацию',
-                onPressed: () => context.push('/playlist'),
+                onPressed: () => context.push('/playlist/Для вас'),
+                enabled: buttonEnabled,
               ),
             ),
           ],
@@ -125,6 +147,11 @@ class _SuggestPageState extends State<SuggestPage> {
       ),
     );
   }
+
+  void _updateButtonState() => setState(
+        () => buttonEnabled = textController.text.isNotEmpty &&
+            _selectableItems.any((it) => it.isSelected),
+      );
 }
 
 class _SelectableItem {

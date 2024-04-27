@@ -55,14 +55,15 @@ class _SignInPageState extends State<SignInPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TAButton(
               text: 'Далее',
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go('/dashboard'),
+              enabled: true,
             ),
           ),
           const SizedBox(
             height: 8,
           ),
           TextButton(
-            onPressed: () => context.go('/sign_up'),
+            onPressed: () => context.go('/'),
             child: const Text('У меня уже есть аккаунт'),
           ),
         ],

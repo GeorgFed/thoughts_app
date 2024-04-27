@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,6 +45,7 @@ class _DashboardView extends StatelessWidget {
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(128),
               child: AppBar(
+                automaticallyImplyLeading: false,
                 toolbarHeight: 128,
                 title: Padding(
                   padding: const EdgeInsets.only(top: 44),
@@ -56,7 +58,10 @@ class _DashboardView extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.person_outline_rounded),
+                        icon: const Icon(
+                          CupertinoIcons.person,
+                          size: 32,
+                        ),
                         onPressed: () => context.push('/profile'),
                       ),
                     ],

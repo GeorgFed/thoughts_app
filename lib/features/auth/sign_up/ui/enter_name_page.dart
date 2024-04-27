@@ -43,7 +43,7 @@ class _EnterNamePageState extends State<EnterNamePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TAButton(
               text: 'Зарегестрироваться',
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go('/dashboard'),
             ),
           ),
         ],

@@ -17,7 +17,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (_, __) => const DashboardPage(),
+        builder: (_, __) => const SignUpPage(),
         routes: [
           GoRoute(
             path: 'playlist/:categoryName',
@@ -38,8 +38,8 @@ class AppRouter {
             builder: (_, __) => const SignInPage(),
           ),
           GoRoute(
-            path: 'sign_up',
-            builder: (_, __) => const SignUpPage(),
+            path: 'dashboard',
+            builder: (_, __) => const DashboardPage(),
           ),
           GoRoute(
             path: 'enter_name',

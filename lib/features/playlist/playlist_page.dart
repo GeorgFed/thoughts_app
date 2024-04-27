@@ -60,7 +60,7 @@ class _PlaylistView extends StatelessWidget {
                       (e) => MeditationListTile(
                         title: e.title,
                         subtitle: e.author,
-                        onTap: () => context.go('/player/${e.id}'),
+                        onTap: () => context.push('/player/${e.id}'),
                         tags: e.tags,
                         coverUrl: e.coverUrl,
                       ),
