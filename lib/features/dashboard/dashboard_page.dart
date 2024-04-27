@@ -52,7 +52,7 @@ class _DashboardView extends StatelessWidget {
                       Expanded(
                         child: Text(
                           'Привет, $name',
-                          style: theme.textTheme.headlineLarge,
+                          style: theme.textTheme.headlineMedium,
                         ),
                       ),
                       IconButton(
@@ -71,41 +71,46 @@ class _DashboardView extends StatelessWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: List.generate(
-                        3,
-                        (index) => Container(
-                          margin: const EdgeInsets.all(8),
-                          width: 128,
-                          height: 128,
-                          decoration: BoxDecoration(
-                            color: theme.cardColor,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              // Apply color filter to darken image
-                              colorFilter: const ColorFilter.mode(
-                                Colors.black26,
-                                BlendMode.darken,
-                              ),
-                              image: AssetImage(
-                                meditationPromo[index].image,
+                      children: meditationPromo
+                          .map(
+                            (it) => GestureDetector(
+                              onTap: () => context.push('/player/${it.id}'),
+                              child: Container(
+                                margin: const EdgeInsets.all(8),
+                                width: 128,
+                                height: 128,
+                                decoration: BoxDecoration(
+                                  color: theme.cardColor,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    // Apply color filter to darken image
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.black26,
+                                      BlendMode.darken,
+                                    ),
+                                    image: AssetImage(
+                                      it.image,
+                                    ),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Spacer(flex: 2),
+                                    Text(
+                                      it.title,
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
+                                        color: theme.colorScheme.onPrimary,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const Spacer(),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              const Spacer(flex: 2),
-                              Text(
-                                meditationPromo[index].title,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onPrimary,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                      ),
+                          )
+                          .toList(),
                     ),
                   ),
                   Padding(
