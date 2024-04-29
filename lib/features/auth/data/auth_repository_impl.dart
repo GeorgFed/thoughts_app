@@ -49,6 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
     return false;
   }
 
+  @override
   Future<bool> refreshAuth() async {
     final refreshToken = await _secureStorage.read(key: 'refreshToken');
     if (refreshToken == null) {

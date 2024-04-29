@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/domain/auth_repository.dart';
 import '../features/auth/ui/sign_in/sign_in_page.dart';
 import '../features/auth/ui/sign_up/enter_name_page.dart';
 import '../features/auth/ui/sign_up/sign_up_page.dart';
@@ -12,9 +13,26 @@ import '../features/search/search_page.dart';
 import '../features/suggest/suggest_page.dart';
 
 class AppRouter {
-  AppRouter();
+  final AuthRepository authRepository;
 
-  final GoRouter _router = GoRouter(
+  AppRouter({
+    required this.authRepository,
+  });
+
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  late final GoRouter _router = GoRouter(
+    debugLogDiagnostics: true,
+    navigatorKey: navigatorKey,
+    redirect: (_, state) async {
+      final hasAuthenticatedUser = await authRepository.hasAuthenticatedUser;
+
+      if (hasAuthenticatedUser && state.matchedLocation == '/') {
+        return '/dashboard';
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',

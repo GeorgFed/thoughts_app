@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../features/auth/data/auth_repository_impl.dart';
-import '../features/auth/domain/auth_repository.dart';
 import '../features/meditation/data/meditation_repository_impl.dart';
 import '../features/meditation/domain/meditation_repository.dart';
+import 'router.dart';
 
 abstract class AppDi {
-  static final _dio = Provider.autoDispose<Dio>(
+  static final _dio = Provider(
     (_) => Dio()
       ..options = BaseOptions(
         baseUrl: 'http://localhost:8000/api',
@@ -22,7 +22,7 @@ abstract class AppDi {
       ),
   );
 
-  static final _secureStorage = Provider.autoDispose<FlutterSecureStorage>(
+  static final _secureStorage = Provider(
     (_) => const FlutterSecureStorage(),
   );
 
@@ -31,10 +31,16 @@ abstract class AppDi {
     (_) => MeditationRepositoryImpl(),
   );
 
-  static final authRepository = Provider.autoDispose<AuthRepository>(
+  static final authRepository = Provider(
     (ref) => AuthRepositoryImpl(
       ref.watch(_dio),
       ref.watch(_secureStorage),
+    ),
+  );
+
+  static final routerConfig = Provider<AppRouter>(
+    (ref) => AppRouter(
+      authRepository: ref.watch(authRepository),
     ),
   );
 }

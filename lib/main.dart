@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'common/logger.dart';
-import 'common/router.dart';
 import 'common/theme.dart';
 import 'features/app/app.dart';
 
@@ -12,7 +11,6 @@ Future<void> main() async => runZonedGuarded(
         WidgetsFlutterBinding.ensureInitialized();
 
         logger.i('Starting app in main.dart');
-        final router = AppRouter();
         const themeProvider = AppThemeProvider();
 
         final lightTheme = await themeProvider.getTheme(isDarkMode: false);
@@ -29,7 +27,6 @@ Future<void> main() async => runZonedGuarded(
           ThoughtsApp(
             lightTheme: lightTheme,
             darkTheme: darkTheme,
-            routerConfig: router.routerConfig,
           ),
         );
       },
