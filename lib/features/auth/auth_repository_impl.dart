@@ -25,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<bool> _register(String email, String password) async {
     try {
-      final registerRequest = RegisterRequest(email: email, password: password);
+      final _ = RegisterRequest(email: email, password: password);
       final registerResponse = await _dio.post<Map<String, dynamic>>(
         '/auth/register/',
         data: {
@@ -56,12 +56,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
       logger.i(authTokenResponse.data);
       final token = authTokenResponse.data?['access'] as String;
-
-      if (token == null) {
-        logger.e('Failed to get token');
-        return false;
-      }
-
       _dio.interceptors.add(
         TokenInterceptor(
           token: token,

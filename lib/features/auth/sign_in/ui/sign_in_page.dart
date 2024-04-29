@@ -56,7 +56,6 @@ class _SignInPageState extends State<SignInPage> {
             child: TAButton(
               text: 'Далее',
               onPressed: () => context.go('/dashboard'),
-              enabled: true,
             ),
           ),
           const SizedBox(
