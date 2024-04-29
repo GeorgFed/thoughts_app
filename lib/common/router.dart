@@ -8,6 +8,7 @@ import '../features/dashboard/dashboard_page.dart';
 import '../features/player/player_page.dart';
 import '../features/playlist/playlist_page.dart';
 import '../features/profile/ui/profile_page.dart';
+import '../features/search/search_page.dart';
 import '../features/suggest/suggest_page.dart';
 
 class AppRouter {
@@ -52,6 +53,10 @@ class AppRouter {
           GoRoute(
             path: 'suggest',
             builder: (_, __) => const SuggestPage(),
+          ),
+          GoRoute(
+            path: 'search',
+            builder: (_, __) => const SearchPage(),
           ),
         ],
       ),

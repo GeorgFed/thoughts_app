@@ -7,15 +7,15 @@ enum TATextFieldSize {
 
 class TATextField extends StatelessWidget {
   final String hint;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool obscureText;
   final TATextFieldSize size;
   final void Function(String)? onChanged;
 
   const TATextField({
-    required this.controller,
     required this.hint,
+    this.controller,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.size = TATextFieldSize.medium,

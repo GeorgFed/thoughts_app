@@ -64,7 +64,7 @@ class _SignInPageState extends State<SignInPage> {
           ),
           TextButton(
             onPressed: () => context.go('/'),
-            child: const Text('У меня уже есть аккаунт'),
+            child: const Text('У меня еще нет аккаунта'),
           ),
         ],
       ),

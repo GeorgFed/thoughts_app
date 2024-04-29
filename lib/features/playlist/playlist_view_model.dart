@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import '../meditation/domain/meditation_repository.dart';
+import '../meditation/meditation_item.dart';
 
 part 'playlist_state.dart';
 
@@ -28,7 +29,7 @@ class PlaylistViewModel extends Cubit<PlaylistState> {
         categoryName: categoryName,
         playlistItems: meditations
                 ?.map(
-                  (it) => PlaylistItem(
+                  (it) => MeditationItem(
                     id: it.id.toString(),
                     title: it.title,
                     author: it.author,

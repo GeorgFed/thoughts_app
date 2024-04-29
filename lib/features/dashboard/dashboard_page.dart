@@ -105,7 +105,8 @@ class _DashboardView extends StatelessWidget {
                                       it.title,
                                       style:
                                           theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onPrimary,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -124,7 +125,7 @@ class _DashboardView extends StatelessWidget {
                       vertical: 24,
                     ),
                     child: GestureDetector(
-                      onTap: () => context.push('/profile'),
+                      onTap: () => context.push('/search'),
                       child: Container(
                         height: 64,
                         alignment: Alignment.center,
