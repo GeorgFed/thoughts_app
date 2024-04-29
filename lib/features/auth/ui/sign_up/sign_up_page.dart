@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../common/widgets/ta_button.dart';
 import '../../../../common/widgets/ta_text_field.dart';
-import '../../auth_di.dart';
-import '../../auth_state.dart';
-import '../../auth_view_model.dart';
+import '../auth_di.dart';
+import '../auth_state.dart';
+import '../auth_view_model.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -54,7 +54,12 @@ class _SignUpViewState extends State<_SignUpView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocBuilder<AuthViewModel, AuthState>(
+    return BlocConsumer<AuthViewModel, AuthState>(
+      listener: (context, state) {
+        if (state is AuthStateLoggedIn) {
+          context.push('/enter_name');
+        }
+      },
       builder: (context, state) => Scaffold(
         appBar: AppBar(),
         body: Column(
@@ -107,13 +112,10 @@ class _SignUpViewState extends State<_SignUpView> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TAButton(
                 text: 'Далее',
-                onPressed: () {
-                  context.read<AuthViewModel>().onSignUp(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                  context.push('/enter_name');
-                },
+                onPressed: () => context.read<AuthViewModel>().onSignUp(
+                      email: emailController.text,
+                      password: passwordController.text,
+                    ),
                 enabled: buttonEnabled,
               ),
             ),

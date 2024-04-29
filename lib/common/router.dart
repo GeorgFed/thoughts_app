@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/sign_in/ui/sign_in_page.dart';
-import '../features/auth/sign_up/ui/enter_name_page.dart';
-import '../features/auth/sign_up/ui/sign_up_page.dart';
+import '../features/auth/ui/sign_in/sign_in_page.dart';
+import '../features/auth/ui/sign_up/enter_name_page.dart';
+import '../features/auth/ui/sign_up/sign_up_page.dart';
 import '../features/dashboard/dashboard_page.dart';
 import '../features/player/player_page.dart';
 import '../features/playlist/playlist_page.dart';

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import 'auth_repository.dart';
+import '../domain/auth_repository.dart';
 import 'auth_state.dart';
 
 class AuthViewModel extends Cubit<AuthState> {
