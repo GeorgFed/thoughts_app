@@ -9,6 +9,9 @@ analyzer:
     - lib/**/model/*.g.dart
     - lib/**/model/**/*.freezed.dart
     - lib/**/model/**/*.g.dart
+    - lib/**/dto/**/*.freezed.dart
+    - lib/**/dto/*.g.dart - lib/**/dto/**/*.freezed.dart
+    - lib/**/dto/*.g.dart
 
 linter:
   rules:

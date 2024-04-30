@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../common/image_getter.dart';
 import '../../common/widgets/ta_tag.dart';
 
 class MeditationListTile extends StatelessWidget {
@@ -39,7 +40,7 @@ class MeditationListTile extends StatelessWidget {
                     Colors.black26,
                     BlendMode.darken,
                   ),
-                  image: AssetImage(coverUrl),
+                  image: ImageGetter.image(coverUrl),
                 ),
               ),
             ),

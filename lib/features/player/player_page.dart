@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../common/image_getter.dart';
 import '../../common/logger.dart';
 import '../../common/widgets/ta_pulsating_button.dart';
 import 'player_di.dart';
@@ -150,7 +151,7 @@ class _PlayerViewState extends State<_PlayerView> {
                               Colors.black26,
                               BlendMode.darken,
                             ),
-                            image: AssetImage(currentTrack.coverUrl),
+                            image: ImageGetter.image(currentTrack.coverUrl),
                             fit: BoxFit.cover,
                           ),
                         ),
