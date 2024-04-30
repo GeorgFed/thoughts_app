@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common/image_getter.dart';
 import '../../common/widgets/ta_button.dart';
 import '../../common/widgets/ta_pulsating_button.dart';
 import '../../common/widgets/ta_tag.dart';
@@ -93,9 +94,10 @@ class _DashboardView extends StatelessWidget {
                                       Colors.black26,
                                       BlendMode.darken,
                                     ),
-                                    image: AssetImage(
-                                      it.image,
-                                    ),
+                                    image: ImageGetter.image(it.image),
+                                    // image: AssetImage(
+                                    //   it.image,
+                                    // ),
                                   ),
                                 ),
                                 child: Column(

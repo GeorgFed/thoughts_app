@@ -4,7 +4,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../features/auth/data/auth_repository_impl.dart';
 import '../features/meditation/data/meditation_repository_impl.dart';
+import '../features/meditation/data/meditation_repository_mock_impl.dart';
 import '../features/meditation/domain/meditation_repository.dart';
+import 'app_mode_provider.dart';
 import 'router.dart';
 
 abstract class AppDi {
@@ -28,7 +30,11 @@ abstract class AppDi {
 
   static final meditationRepository =
       Provider.autoDispose<MeditationRepository>(
-    (_) => MeditationRepositoryImpl(),
+    (ref) => AppModeProvider.isDemoMode
+        ? MeditationRepositoryMockImpl()
+        : MeditationRepositoryImpl(
+            dio: ref.watch(_dio),
+          ),
   );
 
   static final authRepository = Provider(
