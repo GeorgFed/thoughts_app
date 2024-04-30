@@ -25,15 +25,22 @@ class PlayerPage extends StatelessWidget {
   Widget build(BuildContext context) => Consumer(
         builder: (context, ref, _) => BlocProvider.value(
           value: ref.watch(PlayerDi.viewModel)..onInit(trackId),
-          child: _PlayerView(ref.watch(PlayerDi.viewModel)),
+          child: _PlayerView(
+            ref.watch(PlayerDi.viewModel),
+            trackId,
+          ),
         ),
       );
 }
 
 class _PlayerView extends StatefulWidget {
   final PlayerViewModel viewModel;
+  final String trackId;
 
-  const _PlayerView(this.viewModel);
+  const _PlayerView(
+    this.viewModel,
+    this.trackId,
+  );
 
   @override
   State<_PlayerView> createState() => _PlayerViewState();
@@ -41,14 +48,6 @@ class _PlayerView extends StatefulWidget {
 
 class _PlayerViewState extends State<_PlayerView> {
   final player = AudioPlayer();
-
-  final playlist = ConcatenatingAudioSource(
-    children: [
-      AudioSource.asset('assets/mp3/melody-of-nature-main.mp3'),
-      AudioSource.asset('assets/mp3/moonlight.mp3'),
-      AudioSource.asset('assets/mp3/sad-music.mp3'),
-    ],
-  );
 
   @override
   void initState() {
@@ -61,8 +60,22 @@ class _PlayerViewState extends State<_PlayerView> {
     await session.configure(const AudioSessionConfiguration.speech());
 
     try {
+      final tracks = await widget.viewModel.getPlaylist(
+        widget.trackId,
+      );
+      final urls = tracks.map(Uri.parse).toList();
+      logger.i(urls);
+
+      final list = ConcatenatingAudioSource(
+        children: urls
+            .map(
+              AudioSource.uri,
+            )
+            .toList(),
+      );
+
       await player.setAudioSource(
-        playlist,
+        list,
       );
     } on PlayerException catch (e) {
       logger.e('Error loading audio source: $e');

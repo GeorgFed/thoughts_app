@@ -39,10 +39,10 @@ class AppRouter {
         builder: (_, __) => const SignUpPage(),
         routes: [
           GoRoute(
-            path: 'playlist/:categoryName',
+            path: 'playlist/:categoryId',
             builder: (_, state) {
-              final categoryName = state.pathParameters['categoryName'] ?? '';
-              return PlaylistPage(categoryName);
+              final categoryId = state.pathParameters['categoryId'] ?? '';
+              return PlaylistPage(categoryId: categoryId);
             },
           ),
           GoRoute(

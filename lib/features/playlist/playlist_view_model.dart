@@ -12,28 +12,24 @@ class PlaylistViewModel extends Cubit<PlaylistState> {
     required this.meditationRepository,
   }) : super(PlaylistStateIdle());
 
-  Future<void> onInit({required String categoryName}) async {
-    final meditations = meditationRepository.meditations
-        ?.where(
-          (element) => element.category == categoryName,
-        )
-        .toList();
-
-    if (categoryName == 'Для вас') {
-      emit(PlaylistStateLoading());
-      await Future.delayed(const Duration(seconds: 1));
-    }
+  Future<void> onInit({required String categoryId}) async {
+    final category = meditationRepository.categoryById(
+      categoryId,
+    );
+    final meditationsForCategory = meditationRepository.meditationsByCategory(
+      categoryId,
+    );
 
     emit(
       PlaylistStateData(
-        categoryName: categoryName,
-        playlistItems: meditations
+        categoryName: category?.name ?? '',
+        playlistItems: meditationsForCategory
                 ?.map(
                   (it) => MeditationItem(
-                    id: it.id.toString(),
+                    id: it.id,
                     title: it.title,
-                    author: it.author,
-                    coverUrl: it.cover,
+                    author: it.narrator?.name ?? '',
+                    coverUrl: it.coverUrl,
                     tags: it.tags,
                   ),
                 )

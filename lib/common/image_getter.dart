@@ -8,9 +8,7 @@ class ImageGetter {
     if (AppModeProvider.isDemoMode) {
       return AssetImage(path);
     } else {
-      return CachedNetworkImageProvider(
-        path,
-      );
+      return CachedNetworkImageProvider(path);
     }
   }
 }

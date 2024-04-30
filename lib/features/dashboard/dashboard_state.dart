@@ -8,24 +8,24 @@ final class DashboardStateLoading extends DashboardState {}
 
 final class DashboardStateData extends DashboardState {
   final String name;
-  final List<MeditationPromoItem> meditationPromo;
-  final List<PlaylistItem> playlists;
+  final List<MeditationPromoItem> suggestedMeditations;
+  final List<PlaylistItem> categories;
 
   DashboardStateData({
     required this.name,
-    required this.meditationPromo,
-    required this.playlists,
+    required this.suggestedMeditations,
+    required this.categories,
   });
 }
 
 class MeditationPromoItem {
   final String title;
-  final String image;
+  final String imageUrl;
   final String id;
 
   const MeditationPromoItem({
     required this.title,
-    required this.image,
+    required this.imageUrl,
     required this.id,
   });
 }

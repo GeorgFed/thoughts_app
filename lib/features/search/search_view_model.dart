@@ -11,16 +11,17 @@ class SearchViewModel extends Cubit<SearchState> {
     required this.meditationRepository,
   }) : super(SearchStateIdle());
 
-  void onInit() {
+  Future<void> onInit() async {
+    final meditations = await meditationRepository.meditations;
     emit(
       SearchStateData(
-        meditationItems: meditationRepository.meditations
+        meditationItems: meditations
                 ?.map(
                   (it) => MeditationItem(
-                    id: it.id.toString(),
+                    id: it.id,
                     title: it.title,
-                    author: it.author,
-                    coverUrl: it.cover,
+                    author: it.narrator?.name ?? '',
+                    coverUrl: it.coverUrl,
                     tags: it.tags,
                   ),
                 )
@@ -30,13 +31,16 @@ class SearchViewModel extends Cubit<SearchState> {
     );
   }
 
-  void onSearch(String query) {
-    final queryLower = query.toLowerCase();
-    final result = meditationRepository.meditations?.where(
+  Future<void> onSearch(String query) async {
+    final queryLowerCase = query.toLowerCase();
+    final meditations = await meditationRepository.meditations;
+    final result = meditations?.where(
       (element) =>
-          element.title.toLowerCase().contains(queryLower) ||
-          element.author.toLowerCase().contains(queryLower) ||
-          element.category.toLowerCase().contains(queryLower),
+          element.title.toLowerCase().contains(queryLowerCase) ||
+          (element.narrator?.name ?? '')
+              .toLowerCase()
+              .contains(queryLowerCase) ||
+          (element.category?.name ?? '').toLowerCase().contains(queryLowerCase),
     );
 
     emit(
@@ -46,8 +50,8 @@ class SearchViewModel extends Cubit<SearchState> {
                   (it) => MeditationItem(
                     id: it.id.toString(),
                     title: it.title,
-                    author: it.author,
-                    coverUrl: it.cover,
+                    author: it.narrator?.name ?? '',
+                    coverUrl: it.coverUrl,
                     tags: it.tags,
                   ),
                 )

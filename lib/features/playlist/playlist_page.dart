@@ -8,10 +8,10 @@ import 'playlist_di.dart';
 import 'playlist_view_model.dart';
 
 class PlaylistPage extends StatelessWidget {
-  final String categoryName;
+  final String categoryId;
 
-  const PlaylistPage(
-    this.categoryName, {
+  const PlaylistPage({
+    required this.categoryId,
     super.key,
   });
 
@@ -20,7 +20,7 @@ class PlaylistPage extends StatelessWidget {
         builder: (context, ref, _) => BlocProvider.value(
           value: ref.watch(PlaylistDi.viewModel)
             ..onInit(
-              categoryName: categoryName,
+              categoryId: categoryId,
             ),
           child: const _PlaylistView(),
         ),

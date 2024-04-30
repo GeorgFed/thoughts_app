@@ -14,22 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-MeditationModel _$MeditationModelFromJson(Map<String, dynamic> json) {
-  return _MeditationModel.fromJson(json);
-}
-
 /// @nodoc
 mixin _$MeditationModel {
-  int get id => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get author => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
-  String get cover => throw _privateConstructorUsedError;
-  String get mediaFile => throw _privateConstructorUsedError;
+  String get coverUrl => throw _privateConstructorUsedError;
+  String get trackUrl => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
+  NarratorModel? get narrator => throw _privateConstructorUsedError;
+  CategoryModel? get category => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MeditationModelCopyWith<MeditationModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -42,14 +36,16 @@ abstract class $MeditationModelCopyWith<$Res> {
       _$MeditationModelCopyWithImpl<$Res, MeditationModel>;
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String title,
-      String author,
-      String description,
-      String category,
-      String cover,
-      String mediaFile,
-      List<String> tags});
+      String coverUrl,
+      String trackUrl,
+      List<String> tags,
+      NarratorModel? narrator,
+      CategoryModel? category});
+
+  $NarratorModelCopyWith<$Res>? get narrator;
+  $CategoryModelCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -67,47 +63,66 @@ class _$MeditationModelCopyWithImpl<$Res, $Val extends MeditationModel>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? author = null,
-    Object? description = null,
-    Object? category = null,
-    Object? cover = null,
-    Object? mediaFile = null,
+    Object? coverUrl = null,
+    Object? trackUrl = null,
     Object? tags = null,
+    Object? narrator = freezed,
+    Object? category = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author: null == author
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
+      coverUrl: null == coverUrl
+          ? _value.coverUrl
+          : coverUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      cover: null == cover
-          ? _value.cover
-          : cover // ignore: cast_nullable_to_non_nullable
-              as String,
-      mediaFile: null == mediaFile
-          ? _value.mediaFile
-          : mediaFile // ignore: cast_nullable_to_non_nullable
+      trackUrl: null == trackUrl
+          ? _value.trackUrl
+          : trackUrl // ignore: cast_nullable_to_non_nullable
               as String,
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      narrator: freezed == narrator
+          ? _value.narrator
+          : narrator // ignore: cast_nullable_to_non_nullable
+              as NarratorModel?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as CategoryModel?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NarratorModelCopyWith<$Res>? get narrator {
+    if (_value.narrator == null) {
+      return null;
+    }
+
+    return $NarratorModelCopyWith<$Res>(_value.narrator!, (value) {
+      return _then(_value.copyWith(narrator: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CategoryModelCopyWith<$Res>? get category {
+    if (_value.category == null) {
+      return null;
+    }
+
+    return $CategoryModelCopyWith<$Res>(_value.category!, (value) {
+      return _then(_value.copyWith(category: value) as $Val);
+    });
   }
 }
 
@@ -120,14 +135,18 @@ abstract class _$$MeditationModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
+      {String id,
       String title,
-      String author,
-      String description,
-      String category,
-      String cover,
-      String mediaFile,
-      List<String> tags});
+      String coverUrl,
+      String trackUrl,
+      List<String> tags,
+      NarratorModel? narrator,
+      CategoryModel? category});
+
+  @override
+  $NarratorModelCopyWith<$Res>? get narrator;
+  @override
+  $CategoryModelCopyWith<$Res>? get category;
 }
 
 /// @nodoc
@@ -143,81 +162,66 @@ class __$$MeditationModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? author = null,
-    Object? description = null,
-    Object? category = null,
-    Object? cover = null,
-    Object? mediaFile = null,
+    Object? coverUrl = null,
+    Object? trackUrl = null,
     Object? tags = null,
+    Object? narrator = freezed,
+    Object? category = freezed,
   }) {
     return _then(_$MeditationModelImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      author: null == author
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
+      coverUrl: null == coverUrl
+          ? _value.coverUrl
+          : coverUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      cover: null == cover
-          ? _value.cover
-          : cover // ignore: cast_nullable_to_non_nullable
-              as String,
-      mediaFile: null == mediaFile
-          ? _value.mediaFile
-          : mediaFile // ignore: cast_nullable_to_non_nullable
+      trackUrl: null == trackUrl
+          ? _value.trackUrl
+          : trackUrl // ignore: cast_nullable_to_non_nullable
               as String,
       tags: null == tags
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      narrator: freezed == narrator
+          ? _value.narrator
+          : narrator // ignore: cast_nullable_to_non_nullable
+              as NarratorModel?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as CategoryModel?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$MeditationModelImpl implements _MeditationModel {
   _$MeditationModelImpl(
       {required this.id,
       required this.title,
-      required this.author,
-      required this.description,
-      required this.category,
-      required this.cover,
-      required this.mediaFile,
-      required final List<String> tags})
+      required this.coverUrl,
+      required this.trackUrl,
+      required final List<String> tags,
+      this.narrator,
+      this.category})
       : _tags = tags;
 
-  factory _$MeditationModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MeditationModelImplFromJson(json);
-
   @override
-  final int id;
+  final String id;
   @override
   final String title;
   @override
-  final String author;
+  final String coverUrl;
   @override
-  final String description;
-  @override
-  final String category;
-  @override
-  final String cover;
-  @override
-  final String mediaFile;
+  final String trackUrl;
   final List<String> _tags;
   @override
   List<String> get tags {
@@ -227,8 +231,13 @@ class _$MeditationModelImpl implements _MeditationModel {
   }
 
   @override
+  final NarratorModel? narrator;
+  @override
+  final CategoryModel? category;
+
+  @override
   String toString() {
-    return 'MeditationModel(id: $id, title: $title, author: $author, description: $description, category: $category, cover: $cover, mediaFile: $mediaFile, tags: $tags)';
+    return 'MeditationModel(id: $id, title: $title, coverUrl: $coverUrl, trackUrl: $trackUrl, tags: $tags, narrator: $narrator, category: $category)';
   }
 
   @override
@@ -238,21 +247,20 @@ class _$MeditationModelImpl implements _MeditationModel {
             other is _$MeditationModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.author, author) || other.author == author) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            (identical(other.coverUrl, coverUrl) ||
+                other.coverUrl == coverUrl) &&
+            (identical(other.trackUrl, trackUrl) ||
+                other.trackUrl == trackUrl) &&
+            const DeepCollectionEquality().equals(other._tags, _tags) &&
+            (identical(other.narrator, narrator) ||
+                other.narrator == narrator) &&
             (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.cover, cover) || other.cover == cover) &&
-            (identical(other.mediaFile, mediaFile) ||
-                other.mediaFile == mediaFile) &&
-            const DeepCollectionEquality().equals(other._tags, _tags));
+                other.category == category));
   }
 
-  @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, author, description,
-      category, cover, mediaFile, const DeepCollectionEquality().hash(_tags));
+  int get hashCode => Object.hash(runtimeType, id, title, coverUrl, trackUrl,
+      const DeepCollectionEquality().hash(_tags), narrator, category);
 
   @JsonKey(ignore: true)
   @override
@@ -260,45 +268,32 @@ class _$MeditationModelImpl implements _MeditationModel {
   _$$MeditationModelImplCopyWith<_$MeditationModelImpl> get copyWith =>
       __$$MeditationModelImplCopyWithImpl<_$MeditationModelImpl>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$MeditationModelImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _MeditationModel implements MeditationModel {
   factory _MeditationModel(
-      {required final int id,
+      {required final String id,
       required final String title,
-      required final String author,
-      required final String description,
-      required final String category,
-      required final String cover,
-      required final String mediaFile,
-      required final List<String> tags}) = _$MeditationModelImpl;
-
-  factory _MeditationModel.fromJson(Map<String, dynamic> json) =
-      _$MeditationModelImpl.fromJson;
+      required final String coverUrl,
+      required final String trackUrl,
+      required final List<String> tags,
+      final NarratorModel? narrator,
+      final CategoryModel? category}) = _$MeditationModelImpl;
 
   @override
-  int get id;
+  String get id;
   @override
   String get title;
   @override
-  String get author;
+  String get coverUrl;
   @override
-  String get description;
-  @override
-  String get category;
-  @override
-  String get cover;
-  @override
-  String get mediaFile;
+  String get trackUrl;
   @override
   List<String> get tags;
+  @override
+  NarratorModel? get narrator;
+  @override
+  CategoryModel? get category;
   @override
   @JsonKey(ignore: true)
   _$$MeditationModelImplCopyWith<_$MeditationModelImpl> get copyWith =>

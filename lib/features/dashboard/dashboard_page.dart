@@ -39,8 +39,8 @@ class _DashboardView extends StatelessWidget {
           ),
         DashboardStateData(
           :final name,
-          :final meditationPromo,
-          :final playlists,
+          :final suggestedMeditations,
+          :final categories,
         ) =>
           Scaffold(
             appBar: PreferredSize(
@@ -77,7 +77,7 @@ class _DashboardView extends StatelessWidget {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: meditationPromo
+                      children: suggestedMeditations
                           .map(
                             (it) => GestureDetector(
                               onTap: () => context.push('/player/${it.id}'),
@@ -89,15 +89,11 @@ class _DashboardView extends StatelessWidget {
                                   color: theme.cardColor,
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                    // Apply color filter to darken image
                                     colorFilter: const ColorFilter.mode(
                                       Colors.black26,
                                       BlendMode.darken,
                                     ),
-                                    image: ImageGetter.image(it.image),
-                                    // image: AssetImage(
-                                    //   it.image,
-                                    // ),
+                                    image: ImageGetter.image(it.imageUrl),
                                   ),
                                 ),
                                 child: Column(
@@ -163,31 +159,7 @@ class _DashboardView extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Row(
-                            children: playlists
-                                .asMap()
-                                .entries
-                                .where((element) => element.key.isOdd)
-                                .map(
-                                  (entry) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 4,
-                                      horizontal: 8,
-                                    ),
-                                    child: TATag(
-                                      text: entry.value.title,
-                                      onTap: () => context.push(
-                                        '/playlist/${entry.value.title}',
-                                      ),
-                                      size: TATagSize.large,
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Flexible(
-                          child: Row(
-                            children: playlists
+                            children: categories
                                 .asMap()
                                 .entries
                                 .where((element) => element.key.isEven)
@@ -200,7 +172,31 @@ class _DashboardView extends StatelessWidget {
                                     child: TATag(
                                       text: entry.value.title,
                                       onTap: () => context.push(
-                                        '/playlist/${entry.value.title}',
+                                        '/playlist/${entry.value.id}',
+                                      ),
+                                      size: TATagSize.large,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                        Flexible(
+                          child: Row(
+                            children: categories
+                                .asMap()
+                                .entries
+                                .where((element) => element.key.isOdd)
+                                .map(
+                                  (entry) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 4,
+                                      horizontal: 8,
+                                    ),
+                                    child: TATag(
+                                      text: entry.value.title,
+                                      onTap: () => context.push(
+                                        '/playlist/${entry.value.id}',
                                       ),
                                       size: TATagSize.large,
                                     ),

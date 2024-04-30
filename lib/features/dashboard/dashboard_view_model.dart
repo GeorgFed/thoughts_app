@@ -13,26 +13,28 @@ class DashboardViewModel extends Cubit<DashboardState> {
 
   Future<void> onInit() async {
     emit(DashboardStateLoading());
-    final meditations = await meditationRepository.getMeditations();
+    final meditations = await meditationRepository.meditations;
+    final categories = await meditationRepository.categories;
     emit(
       DashboardStateData(
         name: 'Егор',
-        meditationPromo: meditations
+        suggestedMeditations: meditations
                 ?.take(3)
                 .map(
                   (it) => MeditationPromoItem(
                     title: it.title,
-                    image: it.cover,
+                    imageUrl: it.coverUrl,
                     id: it.id.toString(),
                   ),
                 )
                 .toList() ??
             [],
-        playlists: meditations
-                ?.map((it) => it.category)
-                .toSet()
-                .map(
-                  (it) => PlaylistItem(title: it, id: it),
+        categories: categories
+                ?.map(
+                  (it) => PlaylistItem(
+                    title: it.name,
+                    id: it.id.toString(),
+                  ),
                 )
                 .toList() ??
             [],

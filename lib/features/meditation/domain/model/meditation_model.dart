@@ -1,21 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'category_model.dart';
+import 'narrator_model.dart';
+
 part 'meditation_model.freezed.dart';
-part 'meditation_model.g.dart';
 
 @freezed
-abstract class MeditationModel with _$MeditationModel {
+class MeditationModel with _$MeditationModel {
   factory MeditationModel({
-    required int id,
+    required String id,
     required String title,
-    required String author,
-    required String description,
-    required String category,
-    required String cover,
-    required String mediaFile,
+    required String coverUrl,
+    required String trackUrl,
     required List<String> tags,
+    NarratorModel? narrator,
+    CategoryModel? category,
   }) = _MeditationModel;
-
-  factory MeditationModel.fromJson(Map<String, dynamic> json) =>
-      _$MeditationModelFromJson(json);
 }
