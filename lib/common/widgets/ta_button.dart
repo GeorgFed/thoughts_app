@@ -74,7 +74,7 @@ class _TAButtonState extends State<TAButton>
             : null,
         child: Text(
           widget.text,
-          style: theme.textTheme.headline6?.copyWith(
+          style: theme.textTheme.bodyLarge?.copyWith(
             color: theme.colorScheme.onPrimary,
           ),
         ),
