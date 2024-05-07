@@ -8,6 +8,7 @@ import '../../common/image_getter.dart';
 import '../../common/widgets/ta_button.dart';
 import '../../common/widgets/ta_pulsating_button.dart';
 import '../../common/widgets/ta_tag.dart';
+import '../../common/widgets/ta_text_field.dart';
 import 'dashboard_di.dart';
 import 'dashboard_view_model.dart';
 
@@ -124,19 +125,10 @@ class _DashboardView extends StatelessWidget {
                     ),
                     child: GestureDetector(
                       onTap: () => context.push('/search'),
-                      child: Container(
-                        height: 64,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: theme.cardColor,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          'Поиск',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onBackground,
-                          ),
-                        ),
+                      child: const TATextField(
+                        hint: 'Поиск',
+                        isEditable: false,
+                        centerHint: true,
                       ),
                     ),
                   ),

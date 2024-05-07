@@ -118,8 +118,9 @@ class _SuggestPageState extends State<SuggestPage> {
                                   );
                                   buttonEnabled =
                                       textController.text.isNotEmpty &&
-                                          _selectableItems
-                                              .any((it) => it.isSelected);
+                                          _selectableItems.any(
+                                            (it) => it.isSelected,
+                                          );
                                 },
                               );
                             },
@@ -138,7 +139,7 @@ class _SuggestPageState extends State<SuggestPage> {
               ),
               child: TAButton(
                 text: 'Подобрать медитацию',
-                onPressed: () => context.push('/playlist/Для вас'),
+                onPressed: () => context.push('/playlist/1'),
                 enabled: buttonEnabled,
               ),
             ),

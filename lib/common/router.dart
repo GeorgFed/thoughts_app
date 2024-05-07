@@ -74,7 +74,28 @@ class AppRouter {
           ),
           GoRoute(
             path: 'search',
-            builder: (_, __) => const SearchPage(),
+            pageBuilder: (_, __) => CustomTransitionPage(
+              child: const SearchPage(),
+              transitionDuration: const Duration(milliseconds: 500),
+              transitionsBuilder: (
+                BuildContext context,
+                Animation<double> animation,
+                Animation<double> secondaryAnimation,
+                Widget child,
+              ) =>
+                  SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.ease,
+                  ),
+                ),
+                child: child,
+              ),
+            ),
           ),
         ],
       ),

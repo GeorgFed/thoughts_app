@@ -20,8 +20,27 @@ class SearchPage extends StatelessWidget {
       );
 }
 
-class _SearchView extends StatelessWidget {
+class _SearchView extends StatefulWidget {
   const _SearchView();
+
+  @override
+  State<_SearchView> createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<_SearchView> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) =>
@@ -35,10 +54,10 @@ class _SearchView extends StatelessWidget {
             Scaffold(
               appBar: AppBar(
                 title: TATextField(
-                  onChanged: (query) {
-                    context.read<SearchViewModel>().onSearch(query);
-                  },
+                  onChanged: (query) =>
+                      context.read<SearchViewModel>().onSearch(query),
                   hint: 'Поиск',
+                  focusNode: _focusNode,
                 ),
               ),
               body: Center(

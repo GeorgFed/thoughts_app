@@ -7,19 +7,25 @@ enum TATextFieldSize {
 
 class TATextField extends StatelessWidget {
   final String hint;
+  final bool isEditable;
+  final bool centerHint;
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool obscureText;
   final TATextFieldSize size;
   final void Function(String)? onChanged;
+  final FocusNode? focusNode;
 
   const TATextField({
     required this.hint,
+    this.isEditable = true,
+    this.centerHint = false,
     this.controller,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.size = TATextFieldSize.medium,
     this.onChanged,
+    this.focusNode,
     super.key,
   });
 
@@ -39,11 +45,14 @@ class TATextField extends StatelessWidget {
         children: [
           Flexible(
             child: TextField(
+              focusNode: focusNode,
+              enabled: isEditable,
               controller: controller,
               obscureText: obscureText,
               keyboardType: keyboardType,
               maxLines: size == TATextFieldSize.large ? null : 1,
               onChanged: onChanged,
+              textAlign: centerHint ? TextAlign.center : TextAlign.start,
               decoration: InputDecoration(
                 hintText: hint,
                 hintMaxLines: size == TATextFieldSize.large ? 3 : 1,
