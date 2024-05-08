@@ -5,6 +5,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../features/auth/data/auth_repository_impl.dart';
 import '../features/meditation/data/meditation_repository_impl.dart';
 import '../features/meditation/domain/meditation_repository.dart';
+import '../features/onboarding/data/onboarding_repository_impl.dart';
+import '../features/onboarding/domain/onboarding_repository.dart';
 import 'router.dart';
 
 abstract class AppDi {
@@ -38,6 +40,10 @@ abstract class AppDi {
       ref.watch(_dio),
       ref.watch(_secureStorage),
     ),
+  );
+
+  static final onboardingRepository = Provider<OnboardingRepository>(
+    (ref) => OnboardingRepositoryImpl(),
   );
 
   static final routerConfig = Provider<AppRouter>(

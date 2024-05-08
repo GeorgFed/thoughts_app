@@ -1,10 +1,12 @@
+import 'dart:async';
+
 abstract class OnboardingRepository {
   // Set whether the onboarding has been shown to the user.
-  void setOnboardingShown();
+  Future<void> setOnboardingShown();
 
   // Clears the flag that indicates whether the onboarding has been shown.
-  void clearOnboardingShown();
+  Future<void> clearOnboardingShown();
 
   //Get whether the onboarding has been shown to the user.
-  bool get isOnboardingShown;
+  Future<bool> get isOnboardingShown;
 }

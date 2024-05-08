@@ -1,14 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class OnboardingPage extends StatefulWidget {
+import 'onboarding_di.dart';
+import 'onboarding_view_model.dart';
+
+class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  Widget build(BuildContext context) => Consumer(
+        builder: (context, ref, _) => _OnboardingView(
+          ref.watch(
+            OnboardingDi.viewModel,
+          ),
+        ),
+      );
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class _OnboardingView extends StatefulWidget {
+  final OnboardingViewModel viewModel;
+
+  const _OnboardingView(this.viewModel);
+
+  @override
+  State<_OnboardingView> createState() => _OnboardingViewState();
+}
+
+class _OnboardingViewState extends State<_OnboardingView> {
   final PageController _pageController = PageController();
 
   int _currentPage = 0;
@@ -48,6 +67,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       );
     } else {
       context.go('/sign_up');
+      widget.viewModel.onOnboardingShown();
     }
   }
 

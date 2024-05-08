@@ -8,7 +8,7 @@ import '../features/auth/ui/sign_up/sign_up_page.dart';
 import '../features/dashboard/dashboard_page.dart';
 import '../features/player/player_page.dart';
 import '../features/playlist/playlist_page.dart';
-import '../features/profile/ui/profile_page.dart';
+import '../features/profile/profile_page.dart';
 import '../features/search/search_page.dart';
 import '../features/suggest/suggest_page.dart';
 

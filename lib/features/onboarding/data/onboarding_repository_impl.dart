@@ -3,21 +3,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/onboarding_repository.dart';
 
 class OnboardingRepositoryImpl implements OnboardingRepository {
-  final SharedPreferences _sharedPreferences;
-
-  OnboardingRepositoryImpl(this._sharedPreferences);
+  OnboardingRepositoryImpl();
 
   static const _onboardingKey = 'onboarding_shown';
 
   @override
-  void setOnboardingShown() => _sharedPreferences.setBool(_onboardingKey, true);
+  Future<void> setOnboardingShown() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool(_onboardingKey, true);
+  }
 
   @override
-  bool get isOnboardingShown =>
-      _sharedPreferences.getBool(
-        _onboardingKey,
-      ) ??
-      false;
+  Future<bool> get isOnboardingShown async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(
+          _onboardingKey,
+        ) ??
+        false;
+  }
 
-  void clearOnboardingShown() => _sharedPreferences.remove(_onboardingKey);
+  @override
+  Future<void> clearOnboardingShown() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.remove(_onboardingKey);
+  }
 }
