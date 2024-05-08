@@ -17,9 +17,12 @@ class AuthRepositoryImpl implements AuthRepository {
     this._secureStorage,
   );
 
+  static const _accessKey = 'access';
+  static const _refreshKey = 'refresh';
+
   @override
   Future<bool> get hasAuthenticatedUser async {
-    final accessToken = await _secureStorage.read(key: 'access');
+    final accessToken = await _secureStorage.read(key: _accessKey);
     return accessToken != null;
   }
 
@@ -51,7 +54,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> refreshAuth() async {
-    final refreshToken = await _secureStorage.read(key: 'refreshToken');
+    final refreshToken = await _secureStorage.read(key: _refreshKey);
     if (refreshToken == null) {
       return false;
     }
@@ -129,8 +132,8 @@ class AuthRepositoryImpl implements AuthRepository {
     required String accessToken,
     required String refreshToken,
   }) async {
-    await _secureStorage.write(key: 'access', value: accessToken);
-    await _secureStorage.write(key: 'refresh', value: refreshToken);
+    await _secureStorage.write(key: _accessKey, value: accessToken);
+    await _secureStorage.write(key: _refreshKey, value: refreshToken);
 
     logger.i('Tokens saved');
   }
@@ -143,4 +146,12 @@ class AuthRepositoryImpl implements AuthRepository {
           token: accessToken,
         ),
       );
+
+  @override
+  Future<void> signOut() async {
+    await _secureStorage.delete(key: _accessKey);
+    await _secureStorage.delete(key: _refreshKey);
+
+    logger.i('Tokens deleted');
+  }
 }

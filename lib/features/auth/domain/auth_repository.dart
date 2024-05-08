@@ -7,4 +7,7 @@ abstract class AuthRepository {
 
   /// A function that refreshes the authentication and returns a boolean indicating success.
   Future<bool> refreshAuth();
+
+  /// A function that signs out the current user.
+  Future<void> signOut();
 }
