@@ -6,6 +6,7 @@ import '../features/auth/ui/sign_in/sign_in_page.dart';
 import '../features/auth/ui/sign_up/enter_name_page.dart';
 import '../features/auth/ui/sign_up/sign_up_page.dart';
 import '../features/dashboard/dashboard_page.dart';
+import '../features/onboarding/onboarding_page.dart';
 import '../features/player/player_page.dart';
 import '../features/playlist/playlist_page.dart';
 import '../features/profile/profile_page.dart';
@@ -31,13 +32,19 @@ class AppRouter {
         return '/dashboard';
       }
 
+      // TODO: Add onboarding condition
+
       return null;
     },
     routes: [
       GoRoute(
         path: '/',
-        builder: (_, __) => const SignUpPage(),
+        builder: (_, __) => const OnboardingPage(),
         routes: [
+          GoRoute(
+            path: 'sign_up',
+            builder: (_, __) => const SignUpPage(),
+          ),
           GoRoute(
             path: 'playlist/:categoryId',
             builder: (_, state) {
