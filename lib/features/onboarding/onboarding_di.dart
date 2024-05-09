@@ -1,6 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 
-import '../../common/app_di.dart';
+import '../../core/di/app_di.dart';
 import 'onboarding_view_model.dart';
 
 abstract class OnboardingDi {

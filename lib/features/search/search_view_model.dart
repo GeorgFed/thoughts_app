@@ -11,8 +11,8 @@ class SearchViewModel extends Cubit<SearchState> {
     required this.meditationRepository,
   }) : super(SearchStateIdle());
 
-  Future<void> onInit() async {
-    final meditations = await meditationRepository.meditations;
+  void onInit() {
+    final meditations = meditationRepository.meditations;
     emit(
       SearchStateData(
         meditationItems: meditations
@@ -31,9 +31,9 @@ class SearchViewModel extends Cubit<SearchState> {
     );
   }
 
-  Future<void> onSearch(String query) async {
+  void onSearch(String query) {
     final queryLowerCase = query.toLowerCase();
-    final meditations = await meditationRepository.meditations;
+    final meditations = meditationRepository.meditations;
     final result = meditations?.where(
       (element) =>
           element.title.toLowerCase().contains(queryLowerCase) ||

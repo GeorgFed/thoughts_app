@@ -1,6 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
 import '../../../common/logger.dart';
+import '../../../core/network/dio_client.dart';
+import '../../../core/network/exceptions/connection_exception.dart';
+import '../../../core/network/exceptions/network_exception.dart';
 import '../domain/meditation_repository.dart';
 import '../domain/model/category_model.dart';
 import '../domain/model/meditation_model.dart';
@@ -10,71 +14,90 @@ import 'dto/meditation_dto.dart';
 import 'dto/narrator_dto.dart';
 
 class MeditationRepositoryImpl implements MeditationRepository {
-  final Dio dio;
+  final DioClient dioClient;
+  final Connectivity connectivity;
 
   MeditationRepositoryImpl({
-    required this.dio,
+    required this.dioClient,
+    required this.connectivity,
   });
 
   @override
-  Future<List<MeditationModel>?> get meditations async {
-    if (_meditations == null) await fetchData();
-
-    return _meditations;
-  }
+  List<MeditationModel>? get meditations => _meditations;
 
   @override
-  Future<List<CategoryModel>?> get categories async {
-    if (_categories == null) await fetchData();
-
-    return _categories;
-  }
+  List<MeditationModel>? get recommendedMeditations => _recommendedMeditations;
 
   @override
-  Future<List<NarratorModel>?> get narrators async {
-    if (_narrators == null) await fetchData();
+  List<CategoryModel>? get categories => _categories;
 
-    return _narrators;
-  }
+  @override
+  List<NarratorModel>? get narrators => _narrators;
 
   @override
   Future<void> fetchData() async {
-    final narrators = await _fetchNarrators();
-    final categories = await _fetchCategories();
-    final meditations = await _fetchMeditations();
-    // final _ = await _fetchRecommendMeditations();
+    logger.d('fetching data');
 
-    _categories = categories
-        ?.map<CategoryModel>(
-          (category) => CategoryModel(
-            id: category.id.toString(),
-            name: category.name,
-          ),
-        )
-        .toList();
+    final connectivityResult = await connectivity.checkConnectivity();
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      throw ConnectionException();
+    }
 
-    _narrators = narrators
-        ?.map(
-          (narrator) => NarratorModel(
-            id: narrator.id.toString(),
-            name: narrator.name,
-          ),
-        )
-        .toList();
+    try {
+      final narrators = await _fetchNarrators();
+      final categories = await _fetchCategories();
+      final meditations = await _fetchMeditations();
+      // final recommendedMeditations = await _fetchRecommendMeditations();
 
-    _meditations = meditations
-        ?.map(
-          (meditation) => MeditationModel(
-            id: meditation.id.toString(),
-            title: meditation.name,
-            trackUrl: meditation.audioFileName,
-            coverUrl: meditation.coverFileName,
-            narrator: narratorById(meditation.meditationNarratorId.toString()),
-            category: categoryById(meditation.meditationThemeId.toString()),
-            tags: [],
-          ),
-        )
-        .toList();
+      _categories = categories
+          ?.map<CategoryModel>(
+            (category) => CategoryModel(
+              id: category.id.toString(),
+              name: category.name,
+            ),
+          )
+          .toList();
+
+      _narrators = narrators
+          ?.map(
+            (narrator) => NarratorModel(
+              id: narrator.id.toString(),
+              name: narrator.name,
+            ),
+          )
+          .toList();
+
+      _meditations = meditations
+          ?.map(
+            (meditation) => MeditationModel.fromDto(
+              meditation,
+              categoryById(meditation.meditationTheme.toString()),
+              narratorById(meditation.meditationNarrator.toString()),
+            ),
+          )
+          .toList();
+
+      _recommendedMeditations = meditations
+          ?.take(3)
+          .map(
+            (meditation) => MeditationModel.fromDto(
+              meditation,
+              categoryById(meditation.meditationTheme.toString()),
+              narratorById(meditation.meditationNarrator.toString()),
+            ),
+          )
+          .toList();
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        logger.e('Unauthorized exception');
+        return;
+      }
+
+      throw NetworkException(
+        message: 'Пожалуйста, попробуйте позже',
+        title: 'Не удалось загрузить медитации',
+      );
+    }
   }
 
   @override
@@ -97,61 +120,65 @@ class MeditationRepositoryImpl implements MeditationRepository {
 
   List<MeditationModel>? _meditations;
 
+  List<MeditationModel>? _recommendedMeditations;
+
   List<CategoryModel>? _categories;
 
   List<NarratorModel>? _narrators;
 
   Future<List<MeditationDto>?> _fetchMeditations() async {
     try {
-      final response = await dio.get<List<dynamic>>('/meditation/');
+      final response = await dioClient.core.get<List<dynamic>>('/meditation/');
       final meditations = response.data
           ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))
           .toList();
       return meditations ?? [];
     } on DioException catch (e) {
       logger.e('meditation query failed: $e');
-      return null;
+      rethrow;
     }
   }
 
-  Future<List<MeditationDto>?> _fetchRecommendMeditations() async {
-    try {
-      final response = await dio.get<List<dynamic>>(
-        '/meditation/recomendate_meditations/',
-      );
-      final meditations = response.data
-          ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))
-          .toList();
-      return meditations ?? [];
-    } on DioException catch (e) {
-      logger.e('meditation query failed: $e');
-      return null;
-    }
-  }
+  // Future<List<MeditationDto>?> _fetchRecommendMeditations() async {
+  //   try {
+  //     final response = await dioClient.core.get<List<dynamic>>(
+  //       '/meditation/recomendate_meditations/',
+  //     );
+  //     final meditations = response.data
+  //         ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))
+  //         .toList();
+  //     return meditations ?? [];
+  //   } on DioException catch (e) {
+  //     logger.e('recomendate_meditations query failed: $e');
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<NarratorDto>?> _fetchNarrators() async {
     try {
-      final response = await dio.get<List<dynamic>>('/meditation_narrator/');
+      final response =
+          await dioClient.core.get<List<dynamic>>('/meditation_narrator/');
       final narrators = response.data
           ?.map((e) => NarratorDto.fromJson(e as Map<String, dynamic>))
           .toList();
       return narrators ?? [];
     } on DioException catch (e) {
       logger.e('narrator query failed: $e');
-      return null;
+      rethrow;
     }
   }
 
   Future<List<CategoryDto>?> _fetchCategories() async {
     try {
-      final response = await dio.get<List<dynamic>>('/meditation_theme/');
+      final response =
+          await dioClient.core.get<List<dynamic>>('/meditation_theme/');
       final categories = response.data
           ?.map((e) => CategoryDto.fromJson(e as Map<String, dynamic>))
           .toList();
       return categories ?? [];
     } on DioException catch (e) {
-      logger.e('category query failed: $e');
-      return null;
+      logger.e('meditation_theme query failed: $e');
+      rethrow;
     }
   }
 }

@@ -6,19 +6,19 @@ part 'meditation_dto.g.dart';
 class MeditationDto {
   final int id;
   final String name;
-  final String audioFileName;
-  final String coverFileName;
-  final int? meditationThemeId;
-  final int? meditationNarratorId;
+  final String audioFileUrl;
+  final String coverFileUrl;
+  final int meditationTheme;
+  final int meditationNarrator;
 
   MeditationDto(
     this.id,
     this.name,
-    this.audioFileName,
-    this.coverFileName, {
-    this.meditationThemeId,
-    this.meditationNarratorId,
-  });
+    this.audioFileUrl,
+    this.coverFileUrl,
+    this.meditationTheme,
+    this.meditationNarrator,
+  );
 
   factory MeditationDto.fromJson(Map<String, dynamic> json) =>
       _$MeditationDtoFromJson(json);

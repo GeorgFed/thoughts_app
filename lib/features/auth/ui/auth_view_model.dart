@@ -23,4 +23,18 @@ class AuthViewModel extends Cubit<AuthState> {
       emit(AuthStateError());
     }
   }
+
+  Future<void> onSignIn({
+    required String email,
+    required String password,
+  }) async {
+    emit(AuthStateLoading());
+    final result = await authRepository.signIn(email, password);
+
+    if (result) {
+      emit(AuthStateLoggedIn());
+    } else {
+      emit(AuthStateError());
+    }
+  }
 }

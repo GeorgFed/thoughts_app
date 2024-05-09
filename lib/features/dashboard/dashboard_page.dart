@@ -38,6 +38,27 @@ class _DashboardView extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           ),
+        DashboardStateError(:final title, :final message) => Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (title != null)
+                    Text(title, style: theme.textTheme.titleLarge),
+                  const SizedBox(height: 16),
+                  Text(message, style: theme.textTheme.bodyLarge),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 96.0),
+                    child: TAButton(
+                      text: 'Попробовать снова',
+                      onPressed: () => context.go('/profile'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         DashboardStateData(
           :final name,
           :final suggestedMeditations,

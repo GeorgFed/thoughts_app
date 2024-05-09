@@ -6,6 +6,16 @@ final class DashboardStateIdle extends DashboardState {}
 
 final class DashboardStateLoading extends DashboardState {}
 
+final class DashboardStateError extends DashboardState {
+  final String message;
+  final String? title;
+
+  DashboardStateError({
+    required this.message,
+    this.title,
+  });
+}
+
 final class DashboardStateData extends DashboardState {
   final String name;
   final List<MeditationPromoItem> suggestedMeditations;
@@ -16,6 +26,32 @@ final class DashboardStateData extends DashboardState {
     required this.suggestedMeditations,
     required this.categories,
   });
+
+  static DashboardStateData fromData(
+    String name,
+    List<MeditationModel> recommendedMeditations,
+    List<CategoryModel> categories,
+  ) =>
+      DashboardStateData(
+        name: 'Егор',
+        suggestedMeditations: recommendedMeditations
+            .map(
+              (it) => MeditationPromoItem(
+                title: it.title,
+                imageUrl: it.coverUrl,
+                id: it.id.toString(),
+              ),
+            )
+            .toList(),
+        categories: categories
+            .map(
+              (it) => PlaylistItem(
+                title: it.name,
+                id: it.id.toString(),
+              ),
+            )
+            .toList(),
+      );
 }
 
 class MeditationPromoItem {

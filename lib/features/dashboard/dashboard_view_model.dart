@@ -1,43 +1,68 @@
 import 'package:bloc/bloc.dart';
 
+import '../../core/network/exceptions/network_exception.dart';
+import '../auth/domain/auth_repository.dart';
 import '../meditation/domain/meditation_repository.dart';
+import '../meditation/domain/model/category_model.dart';
+import '../meditation/domain/model/meditation_model.dart';
 
 part 'dashboard_state.dart';
 
 class DashboardViewModel extends Cubit<DashboardState> {
   final MeditationRepository meditationRepository;
+  final AuthRepository authRepository;
 
   DashboardViewModel({
     required this.meditationRepository,
+    required this.authRepository,
   }) : super(DashboardStateIdle());
 
   Future<void> onInit() async {
     emit(DashboardStateLoading());
-    final meditations = await meditationRepository.meditations;
-    final categories = await meditationRepository.categories;
+
+    try {
+      await authRepository.authorize();
+
+      await meditationRepository.fetchData();
+
+      final recommendedMeditations =
+          meditationRepository.recommendedMeditations;
+      final categories = meditationRepository.categories;
+
+      if (recommendedMeditations == null || categories == null) {
+        _emitUnknownError();
+        return;
+      }
+      emit(
+        DashboardStateData.fromData(
+          'Егор',
+          recommendedMeditations,
+          categories,
+        ),
+      );
+    } on NetworkException catch (e) {
+      _emitNetworkError(e.message, e.title);
+    } on Exception catch (_) {
+      _emitUnknownError();
+    }
+  }
+
+  void _emitNetworkError(
+    String message,
+    String? title,
+  ) =>
+      emit(
+        DashboardStateError(
+          message: message,
+          title: title,
+        ),
+      );
+
+  void _emitUnknownError() {
     emit(
-      DashboardStateData(
-        name: 'Егор',
-        suggestedMeditations: meditations
-                ?.take(3)
-                .map(
-                  (it) => MeditationPromoItem(
-                    title: it.title,
-                    imageUrl: it.coverUrl,
-                    id: it.id.toString(),
-                  ),
-                )
-                .toList() ??
-            [],
-        categories: categories
-                ?.map(
-                  (it) => PlaylistItem(
-                    title: it.name,
-                    id: it.id.toString(),
-                  ),
-                )
-                .toList() ??
-            [],
+      DashboardStateError(
+        title: 'Неизвестная ошибка',
+        message: 'Пожалуйста, попробуйте позже',
       ),
     );
   }

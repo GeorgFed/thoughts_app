@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../data/dto/meditation_dto.dart';
 import 'category_model.dart';
 import 'narrator_model.dart';
 
@@ -16,4 +17,19 @@ class MeditationModel with _$MeditationModel {
     NarratorModel? narrator,
     CategoryModel? category,
   }) = _MeditationModel;
+
+  static MeditationModel fromDto(
+    MeditationDto dto,
+    CategoryModel? category,
+    NarratorModel? narrator,
+  ) =>
+      MeditationModel(
+        id: dto.id.toString(),
+        title: dto.name,
+        coverUrl: dto.coverFileUrl,
+        trackUrl: dto.audioFileUrl,
+        tags: [],
+        narrator: narrator,
+        category: category,
+      );
 }

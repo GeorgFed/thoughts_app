@@ -6,9 +6,9 @@ part 'category_dto.g.dart';
 class CategoryDto {
   final int id;
   final String name;
-  final String coverFileName;
+  final String coverFileUrl;
 
-  CategoryDto(this.id, this.name, this.coverFileName);
+  CategoryDto(this.id, this.name, this.coverFileUrl);
 
   factory CategoryDto.fromJson(Map<String, dynamic> json) =>
       _$CategoryDtoFromJson(json);

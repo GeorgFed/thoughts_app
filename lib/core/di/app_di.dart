@@ -1,27 +1,25 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../features/auth/data/auth_repository_impl.dart';
-import '../features/meditation/data/meditation_repository_impl.dart';
-import '../features/meditation/domain/meditation_repository.dart';
-import '../features/onboarding/data/onboarding_repository_impl.dart';
-import '../features/onboarding/domain/onboarding_repository.dart';
-import 'router.dart';
+import '../../features/auth/data/auth_repository_impl.dart';
+import '../../features/meditation/data/meditation_repository_impl.dart';
+import '../../features/meditation/domain/meditation_repository.dart';
+import '../../features/onboarding/data/onboarding_repository_impl.dart';
+import '../../features/onboarding/domain/onboarding_repository.dart';
+import '../navigation/router.dart';
+import '../network/dio_client.dart';
 
 abstract class AppDi {
-  static final _dio = Provider(
-    (_) => Dio()
-      ..options = BaseOptions(
-        baseUrl: 'http://localhost:8000/api',
-        headers: {'Content-Type': 'application/json'},
-      )
-      ..interceptors.add(
-        LogInterceptor(
-          responseBody: true,
-          requestBody: true,
-        ),
-      ),
+  static final _dioClient = Provider<DioClient>(
+    (_) => DioClientImpl(
+      dio: Dio(),
+    )..init(),
+  );
+
+  static final _connectivity = Provider(
+    (_) => Connectivity(),
   );
 
   static final _secureStorage = Provider(
@@ -31,13 +29,14 @@ abstract class AppDi {
   static final meditationRepository =
       Provider.autoDispose<MeditationRepository>(
     (ref) => MeditationRepositoryImpl(
-      dio: ref.watch(_dio),
+      dioClient: ref.watch(_dioClient),
+      connectivity: ref.watch(_connectivity),
     ),
   );
 
   static final authRepository = Provider(
     (ref) => AuthRepositoryImpl(
-      ref.watch(_dio),
+      ref.watch(_dioClient),
       ref.watch(_secureStorage),
     ),
   );

@@ -151,7 +151,9 @@ class _SuggestPageState extends State<SuggestPage> {
 
   void _updateButtonState() => setState(
         () => buttonEnabled = textController.text.isNotEmpty &&
-            _selectableItems.any((it) => it.isSelected),
+            _selectableItems.any(
+              (it) => it.isSelected,
+            ),
       );
 }
 

@@ -12,7 +12,7 @@ class PlayerViewModel extends Cubit<PlayerPageState> {
   }) : super(PlayerStateIdle());
 
   Future<List<String>> getPlaylist(String trackId) async {
-    final meditations = await meditationRepository.meditations;
+    final meditations = meditationRepository.meditations;
     final meditation = meditations?.firstWhere(
       (element) => element.id.toString() == trackId,
     );
@@ -24,8 +24,8 @@ class PlayerViewModel extends Cubit<PlayerPageState> {
     return category?.map((it) => it.trackUrl).toList() ?? [];
   }
 
-  Future<void> onInit(String trackId) async {
-    final meditations = await meditationRepository.meditations;
+  void onInit(String trackId) {
+    final meditations = meditationRepository.meditations;
     final meditation = meditations?.firstWhere(
       (element) => element.id.toString() == trackId,
     );

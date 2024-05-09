@@ -5,11 +5,13 @@ import 'model/narrator_model.dart';
 abstract class MeditationRepository {
   Future<void> fetchData();
 
-  Future<List<MeditationModel>?> get meditations;
+  List<MeditationModel>? get meditations;
 
-  Future<List<CategoryModel>?> get categories;
+  List<MeditationModel>? get recommendedMeditations;
 
-  Future<List<NarratorModel>?> get narrators;
+  List<CategoryModel>? get categories;
+
+  List<NarratorModel>? get narrators;
 
   NarratorModel? narratorById(String narratorId);
 

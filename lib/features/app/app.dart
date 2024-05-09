@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../common/app_di.dart';
+import '../../core/di/app_di.dart';
 
 class ThoughtsApp extends StatelessWidget {
   final ThemeData darkTheme;
