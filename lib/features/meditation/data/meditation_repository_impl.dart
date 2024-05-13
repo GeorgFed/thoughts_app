@@ -47,7 +47,7 @@ class MeditationRepositoryImpl implements MeditationRepository {
       final narrators = await _fetchNarrators();
       final categories = await _fetchCategories();
       final meditations = await _fetchMeditations();
-      // final recommendedMeditations = await _fetchRecommendMeditations();
+      final recommendedMeditations = await _fetchRecommendMeditations();
 
       _categories = categories
           ?.map<CategoryModel>(
@@ -77,9 +77,8 @@ class MeditationRepositoryImpl implements MeditationRepository {
           )
           .toList();
 
-      _recommendedMeditations = meditations
-          ?.take(3)
-          .map(
+      _recommendedMeditations = recommendedMeditations
+          ?.map(
             (meditation) => MeditationModel.fromDto(
               meditation,
               categoryById(meditation.meditationTheme.toString()),
@@ -139,20 +138,20 @@ class MeditationRepositoryImpl implements MeditationRepository {
     }
   }
 
-  // Future<List<MeditationDto>?> _fetchRecommendMeditations() async {
-  //   try {
-  //     final response = await dioClient.core.get<List<dynamic>>(
-  //       '/meditation/recomendate_meditations/',
-  //     );
-  //     final meditations = response.data
-  //         ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))
-  //         .toList();
-  //     return meditations ?? [];
-  //   } on DioException catch (e) {
-  //     logger.e('recomendate_meditations query failed: $e');
-  //     rethrow;
-  //   }
-  // }
+  Future<List<MeditationDto>?> _fetchRecommendMeditations() async {
+    try {
+      final response = await dioClient.core.get<List<dynamic>>(
+        '/meditation/recomendate_meditations/',
+      );
+      final meditations = response.data
+          ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))
+          .toList();
+      return meditations ?? [];
+    } on DioException catch (e) {
+      logger.e('recomendate_meditations query failed: $e');
+      rethrow;
+    }
+  }
 
   Future<List<NarratorDto>?> _fetchNarrators() async {
     try {
