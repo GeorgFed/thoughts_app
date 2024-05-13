@@ -111,10 +111,12 @@ class _OnboardingViewState extends State<_OnboardingView> {
                 ElevatedButton(
                   onPressed: _nextPage,
                   style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(
-                      const Size(256, 64.0),
-                    ),
-                  ),
+                      minimumSize: MaterialStateProperty.all(
+                        const Size(256, 64.0),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.white,
+                      )),
                   child: Text(
                     _currentPage == 0 ? 'Далее' : 'Вход в систему',
                     style: theme.textTheme.bodyLarge?.copyWith(

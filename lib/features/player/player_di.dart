@@ -7,6 +7,7 @@ abstract class PlayerDi {
   static final viewModel = Provider.autoDispose(
     (ref) => PlayerViewModel(
       meditationRepository: ref.watch(AppDi.meditationRepository),
+      sessionRepository: ref.watch(AppDi.sessionRepository),
     ),
   );
 }

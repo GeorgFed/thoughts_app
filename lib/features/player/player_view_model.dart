@@ -2,13 +2,17 @@ import 'package:bloc/bloc.dart';
 
 import '../../common/logger.dart';
 import '../meditation/domain/meditation_repository.dart';
+import '../session/session_repository_impl.dart';
 
 part 'player_state.dart';
 
 class PlayerViewModel extends Cubit<PlayerPageState> {
   final MeditationRepository meditationRepository;
+  final SessionRepository sessionRepository;
+
   PlayerViewModel({
     required this.meditationRepository,
+    required this.sessionRepository,
   }) : super(PlayerStateIdle());
 
   Future<List<String>> getPlaylist(String trackId) async {
@@ -35,6 +39,10 @@ class PlayerViewModel extends Cubit<PlayerPageState> {
       emit(PlayerStateNotFound());
       return;
     }
+
+    sessionRepository.addMeditationSession(
+      meditationId: meditation.id,
+    );
 
     final category = meditationRepository.meditationsByCategory(
       meditation.category?.id ?? '',
