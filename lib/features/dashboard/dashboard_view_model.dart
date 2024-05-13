@@ -5,16 +5,19 @@ import '../auth/domain/auth_repository.dart';
 import '../meditation/domain/meditation_repository.dart';
 import '../meditation/domain/model/category_model.dart';
 import '../meditation/domain/model/meditation_model.dart';
+import '../profile/domain/profile_repository.dart';
 
 part 'dashboard_state.dart';
 
 class DashboardViewModel extends Cubit<DashboardState> {
   final MeditationRepository meditationRepository;
   final AuthRepository authRepository;
+  final ProfileRepository profileRepository;
 
   DashboardViewModel({
     required this.meditationRepository,
     required this.authRepository,
+    required this.profileRepository,
   }) : super(DashboardStateIdle());
 
   Future<void> onInit() async {
@@ -22,6 +25,8 @@ class DashboardViewModel extends Cubit<DashboardState> {
 
     try {
       await authRepository.authorize();
+
+      final name = await profileRepository.getUserName();
 
       await meditationRepository.fetchData();
 
@@ -35,7 +40,7 @@ class DashboardViewModel extends Cubit<DashboardState> {
       }
       emit(
         DashboardStateData.fromData(
-          'Егор',
+          name,
           recommendedMeditations,
           categories,
         ),

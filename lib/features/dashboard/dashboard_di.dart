@@ -8,6 +8,7 @@ abstract class DashboardDi {
     (ref) => DashboardViewModel(
       meditationRepository: ref.watch(AppDi.meditationRepository),
       authRepository: ref.watch(AppDi.authRepository),
+      profileRepository: ref.watch(AppDi.profileRepository),
     ),
   );
 }

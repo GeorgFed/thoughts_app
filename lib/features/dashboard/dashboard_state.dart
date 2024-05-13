@@ -33,7 +33,7 @@ final class DashboardStateData extends DashboardState {
     List<CategoryModel> categories,
   ) =>
       DashboardStateData(
-        name: 'Егор',
+        name: name,
         suggestedMeditations: recommendedMeditations
             .map(
               (it) => MeditationPromoItem(
