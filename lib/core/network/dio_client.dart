@@ -43,10 +43,12 @@ class DioClientImpl implements DioClient {
 
     // Only add LogInterceptor in debug mode
     if (kDebugMode) {
-      dio.interceptors.add(LogInterceptor(
-        responseBody: true,
-        requestBody: true,
-      ));
+      dio.interceptors.add(
+        LogInterceptor(
+          responseBody: true,
+          requestBody: true,
+        ),
+      );
     }
   }
 
@@ -71,8 +73,10 @@ class DioClientImpl implements DioClient {
   }
 
   @override
-  Future<Response> retry(RequestOptions requestOptions,
-      {int retryCount = 3}) async {
+  Future<Response> retry(
+    RequestOptions requestOptions, {
+    int retryCount = 3,
+  }) async {
     Response? response;
     try {
       response = await dio.request(

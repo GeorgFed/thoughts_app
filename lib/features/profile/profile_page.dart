@@ -37,7 +37,7 @@ class _ProfileView extends StatelessWidget {
               child: CircularProgressIndicator(),
             ),
           ),
-        ProfileStateData(:final name) => Scaffold(
+        ProfileStateData(:final name, :final progress) => Scaffold(
             appBar: AppBar(),
             body: Column(
               children: [
@@ -59,16 +59,19 @@ class _ProfileView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: TABanner(
-                    title: 'Вы – эксперт',
-                    text:
-                        'Вы уже прошли 40 сессий медитаций – продолжайте в том же духе! До следующего уровня осталось 10 сессий',
+                    title: _progressTitle(progress.levelName),
+                    text: _progressText(
+                      progress.currentLevelCount,
+                      progress.nextLevelCount,
+                    ),
                     footer: Column(
                       children: [
                         const SizedBox(
                           height: 16,
                         ),
                         LinearProgressIndicator(
-                          value: 0.5,
+                          value: progress.currentLevelCount /
+                              progress.nextLevelCount,
                           color: theme.primaryColor,
                           backgroundColor: theme.sliderTheme.thumbColor,
                           borderRadius: BorderRadius.circular(8),
@@ -131,5 +134,31 @@ class _ProfileView extends StatelessWidget {
         ProfileStateSignedOut() => const SizedBox.shrink(),
       },
     );
+  }
+
+  String _progressTitle(String level) => 'Вы – $level';
+
+  String _progressText(int currentLevel, int nextLevel) {
+    final currentLevelSessions = _pluralizeSessions(currentLevel);
+    final sessionsLeft = nextLevel - currentLevel;
+
+    if (sessionsLeft <= 0) {
+      return 'Вы уже прошли $currentLevel $currentLevelSessions медитаций – продолжайте в том же духе!';
+    }
+
+    final nextLevelSessions = _pluralizeSessions(sessionsLeft);
+
+    return 'Вы уже прошли $currentLevel $currentLevelSessions медитаций – продолжайте в том же духе! До следующего уровня осталось пройти $sessionsLeft $nextLevelSessions';
+  }
+
+  String _pluralizeSessions(int count) {
+    if (count % 10 == 1 && count % 100 != 11) {
+      return 'сессию';
+    } else if ((count % 10 >= 2 && count % 10 <= 4) &&
+        !(count % 100 >= 12 && count % 100 <= 14)) {
+      return 'сессии';
+    } else {
+      return 'сессий';
+    }
   }
 }

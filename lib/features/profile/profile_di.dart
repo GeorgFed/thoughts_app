@@ -8,6 +8,7 @@ abstract class ProfileDi {
     (ref) => ProfileViewModel(
       ref.watch(AppDi.authRepository),
       ref.watch(AppDi.profileRepository),
+      ref.watch(AppDi.meditationProgressRepository),
     ),
   );
 }

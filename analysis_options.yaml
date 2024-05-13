@@ -12,6 +12,8 @@ analyzer:
     - lib/**/dto/**/*.freezed.dart
     - lib/**/dto/*.g.dart - lib/**/dto/**/*.freezed.dart
     - lib/**/dto/*.g.dart
+  errors:
+    invalid_annotation_target: ignore
 
 linter:
   rules:

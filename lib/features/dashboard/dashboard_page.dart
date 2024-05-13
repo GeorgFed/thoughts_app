@@ -103,39 +103,11 @@ class _DashboardView extends StatelessWidget {
                       child: Row(
                         children: suggestedMeditations
                             .map(
-                              (it) => GestureDetector(
+                              (it) => _RecommendedMeditationItem(
+                                theme: theme,
+                                title: it.title,
+                                imageUrl: it.imageUrl,
                                 onTap: () => context.push('/player/${it.id}'),
-                                child: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  width: 128,
-                                  height: 128,
-                                  decoration: BoxDecoration(
-                                    color: theme.cardColor,
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      colorFilter: const ColorFilter.mode(
-                                        Colors.black26,
-                                        BlendMode.darken,
-                                      ),
-                                      image: ImageGetter.image(it.imageUrl),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      const Spacer(flex: 2),
-                                      Text(
-                                        it.title,
-                                        style:
-                                            theme.textTheme.bodySmall?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const Spacer(),
-                                    ],
-                                  ),
-                                ),
                               ),
                             )
                             .toList(),
@@ -254,4 +226,56 @@ class _DashboardView extends StatelessWidget {
       ),
     );
   }
+}
+
+class _RecommendedMeditationItem extends StatelessWidget {
+  const _RecommendedMeditationItem({
+    required this.theme,
+    required this.title,
+    required this.imageUrl,
+    required this.onTap,
+  });
+
+  final ThemeData theme;
+  final String title;
+  final String imageUrl;
+  final void Function() onTap;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.all(8),
+          width: 128,
+          height: 128,
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              colorFilter: const ColorFilter.mode(
+                Colors.black26,
+                BlendMode.darken,
+              ),
+              image: ImageGetter.image(imageUrl),
+            ),
+          ),
+          child: Column(
+            children: [
+              const Spacer(flex: 2),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  title,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
+      );
 }
