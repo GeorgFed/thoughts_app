@@ -10,6 +10,8 @@ import '../../features/onboarding/data/onboarding_repository_impl.dart';
 import '../../features/onboarding/domain/onboarding_repository.dart';
 import '../../features/profile/data/profile_repository_impl.dart';
 import '../../features/profile/domain/profile_repository.dart';
+import '../../features/session/session_repository.dart';
+import '../../features/session/session_repository_impl.dart';
 import '../navigation/router.dart';
 import '../network/dio_client.dart';
 
@@ -50,6 +52,12 @@ abstract class AppDi {
   static final profileRepository = Provider<ProfileRepository>(
     (ref) => ProfileRepositoryImpl(
       ref.watch(_dioClient),
+    ),
+  );
+
+  static final sessionRepository = Provider<SessionRepository>(
+    (ref) => SessionRepositoryImpl(
+      dioClient: ref.watch(_dioClient),
     ),
   );
 
