@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Consumer(
         builder: (context, ref, child) => BlocProvider.value(
-          value: ref.watch(ProfileDi.viewModel),
+          value: ref.watch(ProfileDi.viewModel)..onInit(),
           child: const _ProfileView(),
         ),
       );
@@ -25,14 +25,19 @@ class _ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocBuilder<ProfileViewModel, ProfileState>(
+    return BlocConsumer<ProfileViewModel, ProfileState>(
+      listener: (context, state) {
+        if (state is ProfileStateSignedOut) {
+          context.go('/');
+        }
+      },
       builder: (context, state) => switch (state) {
         ProfileStateLoading() => const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           ),
-        ProfileStateIdle() => Scaffold(
+        ProfileStateData(:final name) => Scaffold(
             appBar: AppBar(),
             body: Column(
               children: [
@@ -45,7 +50,7 @@ class _ProfileView extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'Егор',
+                        name,
                         style: theme.textTheme.headlineLarge,
                       ),
                     ],
@@ -113,10 +118,7 @@ class _ProfileView extends StatelessWidget {
                       color: theme.colorScheme.error,
                     ),
                   ),
-                  onTap: () {
-                    context.read<ProfileViewModel>().onSignOut();
-                    context.go('/');
-                  },
+                  onTap: () => context.read<ProfileViewModel>().onSignOut(),
                   trailing: Icon(
                     Icons.chevron_right,
                     color: theme.colorScheme.error,
@@ -125,6 +127,8 @@ class _ProfileView extends StatelessWidget {
               ],
             ),
           ),
+        ProfileStateIdle() => const SizedBox.shrink(),
+        ProfileStateSignedOut() => const SizedBox.shrink(),
       },
     );
   }

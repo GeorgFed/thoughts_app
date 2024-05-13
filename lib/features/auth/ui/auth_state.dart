@@ -2,7 +2,11 @@ sealed class AuthState {}
 
 class AuthStateNoUser extends AuthState {}
 
-class AuthStateError extends AuthState {}
+class AuthStateError extends AuthState {
+  final String message;
+
+  AuthStateError({required this.message});
+}
 
 class AuthStateLoading extends AuthState {}
 
@@ -11,3 +15,5 @@ class AuthStateLoggedIn extends AuthState {
 
   AuthStateLoggedIn({this.name});
 }
+
+class AuthStateRegistrationComplete extends AuthState {}

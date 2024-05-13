@@ -8,6 +8,8 @@ import '../../features/meditation/data/meditation_repository_impl.dart';
 import '../../features/meditation/domain/meditation_repository.dart';
 import '../../features/onboarding/data/onboarding_repository_impl.dart';
 import '../../features/onboarding/domain/onboarding_repository.dart';
+import '../../features/profile/data/profile_repository_impl.dart';
+import '../../features/profile/domain/profile_repository.dart';
 import '../navigation/router.dart';
 import '../network/dio_client.dart';
 
@@ -45,9 +47,17 @@ abstract class AppDi {
     (ref) => OnboardingRepositoryImpl(),
   );
 
+  static final profileRepository = Provider<ProfileRepository>(
+    (ref) => ProfileRepositoryImpl(
+      ref.watch(_dioClient),
+    ),
+  );
+
   static final routerConfig = Provider<AppRouter>(
     (ref) => AppRouter(
       authRepository: ref.watch(authRepository),
+      onboardingRepository: ref.watch(onboardingRepository),
+      profileRepository: ref.watch(profileRepository),
     ),
   );
 }

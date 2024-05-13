@@ -7,6 +7,7 @@ abstract class ProfileDi {
   static final viewModel = Provider<ProfileViewModel>(
     (ref) => ProfileViewModel(
       ref.watch(AppDi.authRepository),
+      ref.watch(AppDi.profileRepository),
     ),
   );
 }

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../common/logger.dart';
 import '../../../core/network/dio_client.dart';
+import '../../../core/network/exceptions/network_exception.dart';
 import '../../../core/network/interceptors/auth_interceptor.dart';
 import '../../../core/network/interceptors/refresh_token_interceptor.dart';
 import '../domain/auth_repository.dart';
@@ -27,6 +28,8 @@ class AuthRepositoryImpl implements AuthRepository {
     final accessToken = await _secureStorage.read(key: _accessKey);
     final refreshToken = await _secureStorage.read(key: _refreshKey);
 
+    logger.d('hasAuthenticatedUser: $accessToken, $refreshToken');
+
     return accessToken != null && refreshToken != null;
   }
 
@@ -47,28 +50,27 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<bool> signUp(String email, String password) async {
-    final registerResult = await _register(email, password);
-
-    if (registerResult) {
-      return signIn(email, password);
+  Future<void> signUp(String email, String password) async {
+    try {
+      await _register(email, password);
+      await signIn(email, password);
+    } on NetworkException catch (_) {
+      logger.e('Failed to signUp');
+      rethrow;
     }
-
-    logger.e('Failed to signUp');
-    return false;
   }
 
   @override
-  Future<bool> signIn(
+  Future<void> signIn(
     String email,
     String password,
   ) async {
-    final (
-      String? accessToken,
-      String? refreshToken,
-    ) = await _requestTokens(email, password);
+    try {
+      final (
+        String accessToken,
+        String refreshToken,
+      ) = await _requestTokens(email, password);
 
-    if (accessToken != null && refreshToken != null) {
       await _saveTokens(
         accessToken: accessToken,
         refreshToken: refreshToken,
@@ -78,11 +80,10 @@ class AuthRepositoryImpl implements AuthRepository {
         accessToken: accessToken,
         refreshToken: refreshToken,
       );
-
-      return true;
+    } on NetworkException catch (_) {
+      logger.e('Failed to signIn');
+      rethrow;
     }
-
-    return false;
   }
 
   Future<(String?, String?)> _refreshToken({
@@ -104,11 +105,11 @@ class AuthRepositoryImpl implements AuthRepository {
       return (newAccessToken, refreshToken);
     } on DioException catch (e) {
       logger.e('refresh query failed: $e');
-      return (null, null);
+      throw NetworkException(message: 'Не удалось войти в аккаунт');
     }
   }
 
-  Future<bool> _register(String email, String password) async {
+  Future<void> _register(String email, String password) async {
     try {
       final request = RegisterRequest(email: email, password: password);
       final response = await _dioClient.core.post<Map<String, dynamic>>(
@@ -116,14 +117,13 @@ class AuthRepositoryImpl implements AuthRepository {
         data: request.toJson(),
       );
       logger.i(response.data);
-      return true;
     } on DioException catch (e) {
       logger.e('register query failed: $e');
-      return false;
+      throw NetworkException(message: 'Не удалось зарегестрироваться');
     }
   }
 
-  Future<(String?, String?)> _requestTokens(
+  Future<(String, String)> _requestTokens(
     String email,
     String password,
   ) async {
@@ -147,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return (accessToken, refreshToken);
     } on DioException catch (e) {
       logger.e('auth token query failed: ${e.response?.data}');
-      return (null, null);
+      throw NetworkException(message: 'Не удалось войти в аккаунт');
     }
   }
 

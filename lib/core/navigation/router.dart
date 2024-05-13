@@ -6,18 +6,24 @@ import '../../features/auth/ui/sign_in/sign_in_page.dart';
 import '../../features/auth/ui/sign_up/enter_name_page.dart';
 import '../../features/auth/ui/sign_up/sign_up_page.dart';
 import '../../features/dashboard/dashboard_page.dart';
+import '../../features/onboarding/domain/onboarding_repository.dart';
 import '../../features/onboarding/onboarding_page.dart';
 import '../../features/player/player_page.dart';
 import '../../features/playlist/playlist_page.dart';
+import '../../features/profile/domain/profile_repository.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/search/search_page.dart';
 import '../../features/suggest/suggest_page.dart';
 
 class AppRouter {
   final AuthRepository authRepository;
+  final OnboardingRepository onboardingRepository;
+  final ProfileRepository profileRepository;
 
   AppRouter({
     required this.authRepository,
+    required this.onboardingRepository,
+    required this.profileRepository,
   });
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -26,13 +32,28 @@ class AppRouter {
     debugLogDiagnostics: true,
     navigatorKey: navigatorKey,
     redirect: (_, state) async {
+      final onboardingComplete = await onboardingRepository.isOnboardingShown;
       final hasAuthenticatedUser = await authRepository.hasAuthenticatedUser;
+      final registrationComplete = await profileRepository.hasUserData;
 
-      if (hasAuthenticatedUser && state.matchedLocation == '/') {
+      if (hasAuthenticatedUser &&
+          registrationComplete &&
+          state.matchedLocation == '/') {
         return '/dashboard';
       }
 
-      // TODO: Add onboarding condition
+      if (hasAuthenticatedUser &&
+          !registrationComplete &&
+          state.matchedLocation == '/') {
+        return '/enter_name';
+      }
+
+      if (onboardingComplete &&
+          !hasAuthenticatedUser &&
+          !registrationComplete &&
+          state.matchedLocation == '/') {
+        return '/sign_up';
+      }
 
       return null;
     },

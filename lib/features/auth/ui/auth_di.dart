@@ -7,6 +7,7 @@ abstract class AuthDi {
   static final viewModel = Provider.autoDispose<AuthViewModel>(
     (ref) => AuthViewModel(
       ref.watch(AppDi.authRepository),
+      ref.watch(AppDi.profileRepository),
     ),
   );
 }

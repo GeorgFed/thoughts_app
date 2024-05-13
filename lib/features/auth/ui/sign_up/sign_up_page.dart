@@ -54,79 +54,91 @@ class _SignUpViewState extends State<_SignUpView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocConsumer<AuthViewModel, AuthState>(
-      listener: (context, state) {
-        if (state is AuthStateLoggedIn) {
-          context.push('/enter_name');
-        }
-      },
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Регистрация',
-              style: theme.textTheme.headlineMedium,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                top: 32.0,
+    return PopScope(
+      canPop: false,
+      child: BlocConsumer<AuthViewModel, AuthState>(
+        listener: (context, state) {
+          if (state is AuthStateLoggedIn) {
+            context.push('/enter_name');
+          }
+          if (state is AuthStateError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
               ),
-              child: TATextField(
-                hint: 'Введите почту',
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
+            );
+          }
+        },
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Регистрация',
+                style: theme.textTheme.headlineMedium,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                top: 16.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 32.0,
+                ),
+                child: TATextField(
+                  hint: 'Введите почту',
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
               ),
-              child: TATextField(
-                hint: 'Введите пароль',
-                controller: passwordController,
-                obscureText: true,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 16.0,
+                ),
+                child: TATextField(
+                  hint: 'Введите пароль',
+                  controller: passwordController,
+                  obscureText: true,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                top: 16.0,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 16.0,
+                ),
+                child: TATextField(
+                  hint: 'Повторите пароль',
+                  controller: confirmPasswordController,
+                  obscureText: true,
+                ),
               ),
-              child: TATextField(
-                hint: 'Повторите пароль',
-                controller: confirmPasswordController,
-                obscureText: true,
+              const SizedBox(
+                height: 32,
               ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TAButton(
-                text: 'Далее',
-                onPressed: () => context.read<AuthViewModel>().onSignUp(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    ),
-                enabled: buttonEnabled,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TAButton(
+                  text: 'Далее',
+                  onPressed: () => context.read<AuthViewModel>().onSignUp(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      ),
+                  enabled: buttonEnabled,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            TextButton(
-              onPressed: () => context.push('/sign_in'),
-              child: const Text('У меня уже есть аккаунт'),
-            ),
-          ],
+              const SizedBox(
+                height: 8,
+              ),
+              TextButton(
+                onPressed: () => context.push('/sign_in'),
+                child: const Text('У меня уже есть аккаунт'),
+              ),
+            ],
+          ),
         ),
       ),
     );
