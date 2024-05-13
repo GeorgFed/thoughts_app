@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'common/app_mode_provider.dart';
 import 'common/logger.dart';
@@ -10,7 +11,9 @@ import 'features/app/app.dart';
 Future<void> main() async => runZonedGuarded(
       () async {
         WidgetsFlutterBinding.ensureInitialized();
-
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+        ]);
         logger.i('Starting app in main.dart');
         AppModeProvider.isDemoMode
             ? logger.i('Demo mode = on')
