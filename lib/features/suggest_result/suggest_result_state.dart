@@ -1,6 +1,5 @@
 part of 'suggest_result_view_model.dart';
 
-@immutable
 sealed class SuggestResultState {}
 
 final class SuggestResultStateIdle extends SuggestResultState {}

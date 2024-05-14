@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 
-import '../../common/logger.dart';
 import '../meditation/domain/meditation_repository.dart';
 import '../session/session_repository_impl.dart';
 
@@ -35,7 +34,6 @@ class PlayerViewModel extends Cubit<PlayerPageState> {
     );
 
     if (meditation == null) {
-      logger.e('Failed to get meditation for id: $trackId');
       emit(PlayerStateNotFound());
       return;
     }

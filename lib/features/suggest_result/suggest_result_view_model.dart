@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import '../chatbot/domain/chatbot_repository.dart';
 import '../meditation/domain/meditation_repository.dart';
