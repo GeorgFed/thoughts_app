@@ -6,6 +6,14 @@ final class ProfileStateIdle extends ProfileState {}
 
 final class ProfileStateLoading extends ProfileState {}
 
+final class ProfileStateError extends ProfileState {
+  final String message;
+
+  ProfileStateError({
+    required this.message,
+  });
+}
+
 final class ProfileStateData extends ProfileState {
   final String name;
   final MeditationProgressModel progress;

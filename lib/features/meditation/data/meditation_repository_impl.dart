@@ -141,7 +141,7 @@ class MeditationRepositoryImpl implements MeditationRepository {
   Future<List<MeditationDto>?> _fetchRecommendMeditations() async {
     try {
       final response = await dioClient.core.get<List<dynamic>>(
-        '/meditation/recomendate_meditations/',
+        '/meditation/recommend_meditations/',
       );
       final meditations = response.data
           ?.map((e) => MeditationDto.fromJson(e as Map<String, dynamic>))

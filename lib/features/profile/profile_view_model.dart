@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 
+import '../../core/network/exceptions/network_exception.dart';
 import '../auth/domain/auth_repository.dart';
 import '../meditation_progress/domain/meditation_progress_repository.dart';
 import '../meditation_progress/domain/models/meditation_progress_model.dart';
@@ -19,16 +20,22 @@ class ProfileViewModel extends Cubit<ProfileState> {
   ) : super(ProfileStateIdle());
 
   Future<void> onInit() async {
-    emit(ProfileStateLoading());
-    final name = await profileRepository.getUserName();
-    final progress = await meditationProgressRepository.getProgress();
+    try {
+      emit(ProfileStateLoading());
+      final name = await profileRepository.getUserName();
+      final progress = await meditationProgressRepository.getProgress();
 
-    emit(
-      ProfileStateData(
-        name: name,
-        progress: progress,
-      ),
-    );
+      emit(
+        ProfileStateData(
+          name: name,
+          progress: progress,
+        ),
+      );
+    } on NetworkException catch (e) {
+      emit(
+        ProfileStateError(message: e.message),
+      );
+    }
   }
 
   Future<void> onSignOut() async {

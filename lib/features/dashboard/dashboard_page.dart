@@ -54,7 +54,7 @@ class _DashboardView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 96.0),
                       child: TAButton(
                         text: 'Попробовать снова',
-                        onPressed: () => context.go('/profile'),
+                        onPressed: () => context.push('/profile'),
                       ),
                     ),
                   ],
