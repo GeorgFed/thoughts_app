@@ -39,6 +39,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.2
+  flutter_launcher_icons: ^0.13.1
 flutter:
   uses-material-design: true
   assets:
@@ -46,3 +47,10 @@ flutter:
     - assets/json/
     - assets/image/
     - assets/mp3/
+    - assets/app-icon/
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/app-icon/thoughts-app-icon.png"
