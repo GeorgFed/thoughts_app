@@ -28,8 +28,6 @@ class AuthRepositoryImpl implements AuthRepository {
     final accessToken = await _secureStorage.read(key: _accessKey);
     final refreshToken = await _secureStorage.read(key: _refreshKey);
 
-    logger.d('hasAuthenticatedUser: $accessToken, $refreshToken');
-
     return accessToken != null && refreshToken != null;
   }
 

@@ -33,26 +33,21 @@ class AppRouter {
     navigatorKey: navigatorKey,
     redirect: (_, state) async {
       final onboardingComplete = await onboardingRepository.isOnboardingShown;
+
+      if (!onboardingComplete && state.matchedLocation == '/') {
+        return null;
+      }
+
       final hasAuthenticatedUser = await authRepository.hasAuthenticatedUser;
+
+      if (!hasAuthenticatedUser && state.matchedLocation == '/') {
+        return '/sign_up';
+      }
+
       final registrationComplete = await profileRepository.hasUserData;
 
-      if (hasAuthenticatedUser &&
-          registrationComplete &&
-          state.matchedLocation == '/') {
-        return '/dashboard';
-      }
-
-      if (hasAuthenticatedUser &&
-          !registrationComplete &&
-          state.matchedLocation == '/') {
+      if (!registrationComplete && state.matchedLocation == '/') {
         return '/enter_name';
-      }
-
-      if (onboardingComplete &&
-          !hasAuthenticatedUser &&
-          !registrationComplete &&
-          state.matchedLocation == '/') {
-        return '/sign_up';
       }
 
       return null;

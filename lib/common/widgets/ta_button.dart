@@ -4,12 +4,14 @@ class TAButton extends StatefulWidget {
   final String text;
   final VoidCallback onPressed;
   final bool enabled;
+  final bool isLoading;
 
   const TAButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.enabled = true,
+    this.isLoading = false,
   });
 
   @override
@@ -65,19 +67,29 @@ class _TAButtonState extends State<TAButton>
             const Size(double.infinity, 72),
           ),
         ),
-        onPressed: widget.enabled
+        onPressed: widget.enabled && !widget.isLoading
             ? () async {
                 await _animationController.forward(from: 0.0);
                 await _animationController.reverse();
                 widget.onPressed();
               }
             : null,
-        child: Text(
-          widget.text,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            color: theme.colorScheme.onPrimary,
-          ),
-        ),
+        child: widget.isLoading
+            ? SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.onPrimary,
+                  ),
+                ),
+              )
+            : Text(
+                widget.text,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                ),
+              ),
       ),
     );
   }

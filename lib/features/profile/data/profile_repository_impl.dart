@@ -23,8 +23,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<bool> get hasUserData async {
     final prefs = await SharedPreferences.getInstance();
     final name = prefs.getString(_userNameKey);
-    logger.d('hasUserDat: $name');
-    return prefs.getString(_userNameKey) != null;
+    return name != null;
   }
 
   @override

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../features/auth/data/auth_repository_impl.dart';
+import '../../features/chatbot/data/chatbot_repository_impl.dart';
+import '../../features/chatbot/domain/chatbot_repository.dart';
 import '../../features/meditation/data/meditation_repository_impl.dart';
 import '../../features/meditation/domain/meditation_repository.dart';
 import '../../features/meditation_progress/data/meditation_progress_repository_impl.dart';
@@ -66,6 +68,12 @@ abstract class AppDi {
   static final meditationProgressRepository =
       Provider<MeditationProgressRepository>(
     (ref) => MeditationProgressRepositoryImpl(
+      ref.watch(_dioClient),
+    ),
+  );
+
+  static final chatbotRepository = Provider<ChatbotRepository>(
+    (ref) => ChatbotRepositoryImpl(
       ref.watch(_dioClient),
     ),
   );
