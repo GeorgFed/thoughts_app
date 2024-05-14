@@ -1,3 +1,5 @@
+import 'domain/model/meditation_model.dart';
+
 class MeditationItem {
   final String id;
   final String title;
@@ -12,4 +14,12 @@ class MeditationItem {
     required this.coverUrl,
     required this.tags,
   });
+
+  static MeditationItem fromModel(MeditationModel model) => MeditationItem(
+        id: model.id,
+        title: model.title,
+        author: model.narrator?.name ?? '',
+        coverUrl: model.coverUrl,
+        tags: model.tags,
+      );
 }

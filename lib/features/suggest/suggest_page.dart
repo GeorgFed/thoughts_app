@@ -69,7 +69,7 @@ class _SuggestViewState extends State<_SuggestView> {
           );
         }
         if (state is SuggestStateResult) {
-          context.go('/playlist/1');
+          context.push('/suggest_result');
         }
       },
       builder: (context, state) => Scaffold(

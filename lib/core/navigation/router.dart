@@ -14,6 +14,7 @@ import '../../features/profile/domain/profile_repository.dart';
 import '../../features/profile/profile_page.dart';
 import '../../features/search/search_page.dart';
 import '../../features/suggest/suggest_page.dart';
+import '../../features/suggest_result/suggest_result_page.dart';
 
 class AppRouter {
   final AuthRepository authRepository;
@@ -94,6 +95,10 @@ class AppRouter {
           GoRoute(
             path: 'suggest',
             builder: (_, __) => const SuggestPage(),
+          ),
+          GoRoute(
+            path: 'suggest_result',
+            builder: (_, __) => const SuggestResultPage(),
           ),
           GoRoute(
             path: 'search',

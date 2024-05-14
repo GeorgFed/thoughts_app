@@ -34,8 +34,7 @@ abstract class AppDi {
     (_) => const FlutterSecureStorage(),
   );
 
-  static final meditationRepository =
-      Provider.autoDispose<MeditationRepository>(
+  static final meditationRepository = Provider<MeditationRepository>(
     (ref) => MeditationRepositoryImpl(
       dioClient: ref.watch(_dioClient),
       connectivity: ref.watch(_connectivity),

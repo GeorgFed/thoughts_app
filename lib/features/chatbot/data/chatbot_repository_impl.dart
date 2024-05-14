@@ -12,6 +12,11 @@ class ChatbotRepositoryImpl implements ChatbotRepository {
   ChatbotRepositoryImpl(this._dioClient);
 
   @override
+  SuggestionResultModel? get suggestionResult => _suggestionResult;
+
+  SuggestionResultModel? _suggestionResult;
+
+  @override
   Future<SuggestionResultModel> getMeditationSuggestion(String prompt) async {
     try {
       final chatId = await _createChat();
@@ -27,6 +32,7 @@ class ChatbotRepositoryImpl implements ChatbotRepository {
         );
       }
 
+      _suggestionResult = response;
       return response;
     } on NetworkException catch (_) {
       rethrow;

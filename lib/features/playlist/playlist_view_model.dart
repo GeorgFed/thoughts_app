@@ -23,18 +23,9 @@ class PlaylistViewModel extends Cubit<PlaylistState> {
     emit(
       PlaylistStateData(
         categoryName: category?.name ?? '',
-        playlistItems: meditationsForCategory
-                ?.map(
-                  (it) => MeditationItem(
-                    id: it.id,
-                    title: it.title,
-                    author: it.narrator?.name ?? '',
-                    coverUrl: it.coverUrl,
-                    tags: it.tags,
-                  ),
-                )
-                .toList() ??
-            [],
+        playlistItems:
+            meditationsForCategory?.map(MeditationItem.fromModel).toList() ??
+                [],
       ),
     );
   }
