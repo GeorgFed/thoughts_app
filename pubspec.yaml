@@ -33,6 +33,7 @@ dependencies:
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.3
   connectivity_plus: ^6.0.3
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -54,3 +55,7 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/app-icon/thoughts-app-icon.png"
+
+flutter_native_splash:
+  color: "#ffffff"
+  color_dark: "#000000"
