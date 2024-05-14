@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+const _baseUrl = String.fromEnvironment('base-url');
+
 abstract class DioClient {
   Dio get core;
 
@@ -24,7 +26,7 @@ class DioClientImpl implements DioClient {
 
   DioClientImpl({
     required this.dio,
-    this.baseUrl = 'http://localhost:8000/api',
+    this.baseUrl = _baseUrl,
     this.defaultHeaders = const {
       'Content-Type': 'application/json',
       'Accept-Language': 'ru',
