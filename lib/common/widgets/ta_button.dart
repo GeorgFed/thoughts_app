@@ -51,19 +51,18 @@ class _TAButtonState extends State<TAButton>
       scale: _scaleAnimation,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith(
-            (Set<MaterialState> states) =>
-                states.contains(MaterialState.disabled)
-                    ? theme.buttonTheme.colorScheme?.primaryContainer
-                    : theme.primaryColor,
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (Set<WidgetState> states) => states.contains(WidgetState.disabled)
+                ? theme.buttonTheme.colorScheme?.primaryContainer
+                : theme.primaryColor,
           ),
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24),
             ),
           ),
-          minimumSize: MaterialStateProperty.all(
+          minimumSize: WidgetStateProperty.all(
             const Size(double.infinity, 72),
           ),
         ),

@@ -111,10 +111,10 @@ class _OnboardingViewState extends State<_OnboardingView> {
                 ElevatedButton(
                   onPressed: _nextPage,
                   style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(
+                    minimumSize: WidgetStateProperty.all(
                       const Size(256, 64.0),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       Colors.white,
                     ),
                   ),
