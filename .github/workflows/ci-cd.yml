@@ -3,6 +3,7 @@ name: 'Thoughts App CI/CD
 on:
  push:
    branches:
+     - master
      - main
 jobs:
   analyze-flutter-project:
