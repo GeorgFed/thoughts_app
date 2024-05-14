@@ -38,6 +38,29 @@ class ProfileViewModel extends Cubit<ProfileState> {
     }
   }
 
+  Future<void> onNameUpdate(String newName) async {
+    if (state is! ProfileStateData) return;
+
+    final name = (state as ProfileStateData).name;
+    final progress = (state as ProfileStateData).progress;
+    if (name == newName) return;
+
+    emit(ProfileStateLoading());
+    try {
+      await profileRepository.updateUserName(newName);
+      emit(
+        ProfileStateData(
+          name: newName,
+          progress: progress,
+        ),
+      );
+    } on NetworkException catch (e) {
+      emit(
+        ProfileStateError(message: e.message),
+      );
+    }
+  }
+
   Future<void> onSignOut() async {
     await profileRepository.clearUserData();
     authRepository.signOut();

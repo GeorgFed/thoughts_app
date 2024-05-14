@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common/widgets/ta_banner.dart';
+import '../../common/widgets/ta_text_field.dart';
 import '../meditation_progress/domain/models/meditation_progress_model.dart';
 import 'profile_di.dart';
 import 'profile_view_model.dart';
@@ -121,26 +122,16 @@ class _ProfileDashboard extends StatelessWidget {
               ],
             ),
           ),
-          const ListTile(
-            title: Text(
-              'Темная тема',
+          ListTile(
+            title: const Text(
+              'Изменить имя',
             ),
-            trailing: Icon(
+            trailing: const Icon(
               Icons.chevron_right,
             ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Text(
-                  'Аккаунт',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ],
+            onTap: () => _showChangeNameDialog(
+              context,
+              onUpdate: context.read<ProfileViewModel>().onNameUpdate,
             ),
           ),
           ListTile(
@@ -155,6 +146,38 @@ class _ProfileDashboard extends StatelessWidget {
               Icons.chevron_right,
               color: theme.colorScheme.error,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showChangeNameDialog(
+    BuildContext context, {
+    required void Function(String) onUpdate,
+  }) {
+    final nameController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).cardColor,
+        title: const Text('Изменить имя'),
+        content: TATextField(
+          controller: nameController,
+          hint: 'Введите новое имя',
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Отменить'),
+            onPressed: () => context.pop(),
+          ),
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              onUpdate(nameController.text);
+              context.pop();
+            },
           ),
         ],
       ),
