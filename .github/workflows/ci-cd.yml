@@ -43,7 +43,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable'
-      - run: flutter build apk --dart-define=base-url=${{secrets.BASE_URL}} --release
+      - run: flutter build apk --dart-define=base-url=${{secrets.BASE_URL}} --release --no-tree-shake-icons
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
